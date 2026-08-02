@@ -18,7 +18,7 @@ const (
 	contentDir  = "content"
 	templateDir = "templates"
 	staticDir   = "static"
-	outputDir   = "public"
+	outputDir   = "docs"
 )
 
 type FrontMatter struct {
@@ -75,8 +75,8 @@ func run() error {
 	}
 
 	tmpl, err := template.New("").Funcs(template.FuncMap{
-		"join":  strings.Join,
-		"slug":  slugify,
+		"join": strings.Join,
+		"slug": slugify,
 		"fmtDate": func(t time.Time) string {
 			months := []string{
 				"janvier", "février", "mars", "avril", "mai", "juin",
