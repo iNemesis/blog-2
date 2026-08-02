@@ -1,0 +1,53 @@
+{{define "post.html"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{.Post.Title}} · Mon Blog</title>
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="wrap">
+    {{template "header" .}}
+
+    <main>
+      <article class="post">
+        <header class="post-header">
+          <p class="eyebrow">
+            <a href="/">Articles</a>
+            {{if .Post.Tags}}
+            <span>·</span>
+            {{range $i, $t := .Post.Tags}}{{if $i}}, {{end}}<a href="/tags/{{slug $t}}/">{{$t}}</a>{{end}}
+            {{end}}
+          </p>
+          <h1>{{.Post.Title}}</h1>
+          <div class="post-meta">
+            <time datetime="{{.Post.ParsedDate.Format "2006-01-02"}}">{{fmtDate .Post.ParsedDate}}</time>
+            <span>·</span>
+            <span>{{.Post.ReadingMins}} min de lecture</span>
+          </div>
+        </header>
+
+        {{if .Post.Image}}
+        <figure class="post-cover">
+          <img src="{{.Post.Image}}" alt="{{.Post.Title}}" loading="eager">
+        </figure>
+        {{end}}
+
+        <div class="prose">
+          {{.Post.Content}}
+        </div>
+
+        <nav class="post-end">
+          <a href="/">← Retour aux articles</a>
+        </nav>
+      </article>
+    </main>
+
+    {{template "footer" .}}
+  </div>
+</body>
+</html>
+{{end}}

@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bienvenue sur mon blog · Mon Blog</title>
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="wrap">
+    
+<header class="site-header">
+  <a class="logo" href="/">Mon Blog</a>
+  <nav>
+    <a href="/">Articles</a>
+    
+    
+    <a class="tag-link" href="/tags/ecriture/">ecriture</a>
+    
+    <a class="tag-link" href="/tags/go/">go</a>
+    
+    <a class="tag-link" href="/tags/markdown/">markdown</a>
+    
+    <a class="tag-link" href="/tags/meta/">meta</a>
+    
+    
+  </nav>
+</header>
+
+
+    <main>
+      <article class="post">
+        <header class="post-header">
+          <p class="eyebrow">
+            <a href="/">Articles</a>
+            
+            <span>·</span>
+            <a href="/tags/meta/">meta</a>, <a href="/tags/go/">go</a>
+            
+          </p>
+          <h1>Bienvenue sur mon blog</h1>
+          <div class="post-meta">
+            <time datetime="2026-07-20">20 juillet 2026</time>
+            <span>·</span>
+            <span>1 min de lecture</span>
+          </div>
+        </header>
+
+        
+        <figure class="post-cover">
+          <img src="/images/welcome.jpg" alt="Bienvenue sur mon blog" loading="eager">
+        </figure>
+        
+
+        <div class="prose">
+          <p>Voici le premier paragraphe : c'est lui qui apparaît en extrait sur la page d'accueil, juste sous le titre. Tu peux aussi forcer un résumé avec le champ <code>summary</code> du front matter.</p>
+<h2>Pourquoi un générateur statique ?</h2>
+<p>Parce que c'est simple, rapide, et que tu contrôles tout. Tu écris du Markdown, tu lances une commande Go, tu uploades le dossier <code>public/</code> sur OVH (ou ailleurs).</p>
+<ul>
+<li>Pas de base de données</li>
+<li>Pas de runtime côté serveur</li>
+<li>Du HTML tout bête</li>
+</ul>
+<h3>Un peu de code</h3>
+<pre><code class="language-go">package main
+
+func main() {
+    println(&quot;hello blog&quot;)
+}
+</code></pre>
+<p>Et un lien utile : <a href="https://go.dev/doc/">Documentation Go</a>.</p>
+<blockquote>
+<p>Écris, génère, publie. Rinse and repeat.</p>
+</blockquote>
+
+        </div>
+
+        <nav class="post-end">
+          <a href="/">← Retour aux articles</a>
+        </nav>
+      </article>
+    </main>
+
+    
+<footer class="site-footer">
+  <p>Généré le 02/08/2026 à 17:10</p>
+</footer>
+
+  </div>
+</body>
+</html>

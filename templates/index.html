@@ -1,0 +1,56 @@
+{{define "index.html"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{if .CurrentTag}}{{.CurrentTag}}{{else}}{{.Title}}{{end}} · Mon Blog</title>
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="wrap">
+    {{template "header" .}}
+
+    <main>
+      <section class="hero">
+        {{if .CurrentTag}}
+        <p class="eyebrow">Tag</p>
+        <h1>{{.CurrentTag}}</h1>
+        <p class="lede"><a href="/">← Tous les articles</a></p>
+        {{else}}
+        <h1>Articles</h1>
+        <p class="lede">Du plus récent au plus ancien.</p>
+        {{end}}
+      </section>
+
+      {{if not .Posts}}
+      <p class="empty">Aucun article pour le moment. Ajoute un fichier <code>.md</code> dans <code>content/</code>.</p>
+      {{else}}
+      <ul class="post-list">
+        {{range .Posts}}
+        <li class="post-card">
+          <a class="post-card-link" href="{{.URL}}">
+            <div class="post-card-body">
+              <div class="post-meta">
+                <time datetime="{{.ParsedDate.Format "2006-01-02"}}">{{fmtDate .ParsedDate}}</time>
+                <span>·</span>
+                <span>{{.ReadingMins}} min</span>
+              </div>
+              <h2>{{.Title}}</h2>
+              {{if .Excerpt}}
+              <p class="excerpt">{{.Excerpt}}</p>
+              {{end}}
+            </div>
+          </a>
+        </li>
+        {{end}}
+      </ul>
+      {{end}}
+    </main>
+
+    {{template "footer" .}}
+  </div>
+</body>
+</html>
+{{end}}

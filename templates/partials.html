@@ -1,0 +1,19 @@
+{{define "header"}}
+<header class="site-header">
+  <a class="logo" href="/">Mon Blog</a>
+  <nav>
+    <a href="/">Articles</a>
+    {{if .AllTags}}
+    {{range .AllTags}}
+    <a class="tag-link{{if eq $.CurrentTag .}} is-active{{end}}" href="/tags/{{slug .}}/">{{.}}</a>
+    {{end}}
+    {{end}}
+  </nav>
+</header>
+{{end}}
+
+{{define "footer"}}
+<footer class="site-footer">
+  <p>Généré le {{.GeneratedAt.Format "02/01/2006 à 15:04"}}</p>
+</footer>
+{{end}}
