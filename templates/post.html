@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{.Post.Title}} · Mon Blog</title>
   <meta name="color-scheme" content="light dark">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="{{url "/css/style.css"}}">
 </head>
 <body>
   <div class="wrap">
@@ -16,10 +16,10 @@
       <article class="post">
         <header class="post-header">
           <p class="eyebrow">
-            <a href="/">Articles</a>
+            <a href="{{url "/"}}">Articles</a>
             {{if .Post.Tags}}
             <span>·</span>
-            {{range $i, $t := .Post.Tags}}{{if $i}}, {{end}}<a href="/tags/{{slug $t}}/">{{$t}}</a>{{end}}
+            {{range $i, $t := .Post.Tags}}{{if $i}}, {{end}}<a href="{{url (printf "/tags/%s/" (slug $t))}}">{{$t}}</a>{{end}}
             {{end}}
           </p>
           <h1>{{.Post.Title}}</h1>
@@ -41,7 +41,7 @@
         </div>
 
         <nav class="post-end">
-          <a href="/">← Retour aux articles</a>
+          <a href="{{url "/"}}">← Retour aux articles</a>
         </nav>
       </article>
     </main>

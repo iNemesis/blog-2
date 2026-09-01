@@ -1,11 +1,11 @@
 {{define "header"}}
 <header class="site-header">
-  <a class="logo" href="/">Mon Blog</a>
+  <a class="logo" href="{{url "/"}}">Mon Blog</a>
   <nav>
-    <a href="/">Articles</a>
+    <a href="{{url "/"}}">Articles</a>
     {{if .AllTags}}
     {{range .AllTags}}
-    <a class="tag-link{{if eq $.CurrentTag .}} is-active{{end}}" href="/tags/{{slug .}}/">{{.}}</a>
+    <a class="tag-link{{if eq $.CurrentTag .}} is-active{{end}}" href="{{url (printf "/tags/%s/" (slug .))}}">{{.}}</a>
     {{end}}
     {{end}}
   </nav>

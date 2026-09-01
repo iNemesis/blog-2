@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{if .CurrentTag}}{{.CurrentTag}}{{else}}{{.Title}}{{end}} · Mon Blog</title>
   <meta name="color-scheme" content="light dark">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="{{url "/css/style.css"}}">
 </head>
 <body>
   <div class="wrap">
@@ -17,7 +17,7 @@
         {{if .CurrentTag}}
         <p class="eyebrow">Tag</p>
         <h1>{{.CurrentTag}}</h1>
-        <p class="lede"><a href="/">← Tous les articles</a></p>
+        <p class="lede"><a href="{{url "/"}}">← Tous les articles</a></p>
         {{else}}
         <h1>Articles</h1>
         <p class="lede">Du plus récent au plus ancien.</p>

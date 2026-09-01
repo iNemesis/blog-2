@@ -77,6 +77,7 @@ func run() error {
 	tmpl, err := template.New("").Funcs(template.FuncMap{
 		"join": strings.Join,
 		"slug": slugify,
+		"url":  absURL,
 		"fmtDate": func(t time.Time) string {
 			months := []string{
 				"janvier", "février", "mars", "avril", "mai", "juin",
@@ -196,6 +197,9 @@ func parsePost(path string) (Post, error) {
 	if meta.Title == "" {
 		return Post{}, fmt.Errorf("title manquant dans le front matter")
 	}
+	if meta.Image != "" {
+		meta.Image = absURL(meta.Image)
+	}
 
 	parsedDate, err := parseDate(meta.Date)
 	if err != nil {
@@ -224,7 +228,7 @@ func parsePost(path string) (Post, error) {
 		Content:     template.HTML(htmlBody),
 		Excerpt:     excerpt,
 		ParsedDate:  parsedDate,
-		URL:         "/blog-2/posts/" + slug + "/",
+		URL:         absURL("/posts/" + slug + "/"),
 		ReadingMins: mins,
 	}, nil
 }
@@ -479,7 +483,7 @@ func parseImage(s string) (alt, src string, ok bool) {
 	if endSrc < 0 {
 		return "", "", false
 	}
-	src = rest[:endSrc]
+	src = absURL(rest[:endSrc])
 	return alt, src, true
 }
 
@@ -555,7 +559,7 @@ func replaceLinks(s string) string {
 			s = s[1:]
 			continue
 		}
-		url := rest[:endURL]
+		url := absURL(rest[:endURL])
 		b.WriteString(`<a href="` + url + `">` + text + `</a>`)
 		s = rest[endURL+1:]
 	}
@@ -570,6 +574,39 @@ func htmlEscape(s string) string {
 		`"`, "&quot;",
 	)
 	return replacer.Replace(s)
+}
+
+func normalizeBasePath(p string) string {
+	p = strings.TrimSpace(p)
+	p = strings.Trim(p, "/")
+	if p == "" {
+		return ""
+	}
+	return "/" + p
+}
+
+func joinBasePath(prefix, path string) string {
+	if path == "" {
+		path = "/"
+	}
+	if strings.Contains(path, "://") ||
+		strings.HasPrefix(path, "//") ||
+		strings.HasPrefix(path, "mailto:") ||
+		strings.HasPrefix(path, "#") ||
+		!strings.HasPrefix(path, "/") {
+		return path
+	}
+	if prefix == "" {
+		return path
+	}
+	if path == "/" {
+		return prefix + "/"
+	}
+	return prefix + path
+}
+
+func absURL(path string) string {
+	return joinBasePath(normalizeBasePath(os.Getenv("BASE_PATH")), path)
 }
 
 func slugify(s string) string {
