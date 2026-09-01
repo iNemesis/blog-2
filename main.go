@@ -224,7 +224,7 @@ func parsePost(path string) (Post, error) {
 		Content:     template.HTML(htmlBody),
 		Excerpt:     excerpt,
 		ParsedDate:  parsedDate,
-		URL:         "/posts/" + slug + "/",
+		URL:         "/blog-2/posts/" + slug + "/",
 		ReadingMins: mins,
 	}, nil
 }
