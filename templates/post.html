@@ -32,7 +32,7 @@
 
         {{if .Post.Image}}
         <figure class="post-cover">
-          <img src="{{.Post.Image}}" alt="{{.Post.Title}}" loading="eager">
+          <img src="{{url .Post.Image}}" alt="{{.Post.Title}}" loading="eager">
         </figure>
         {{end}}
 

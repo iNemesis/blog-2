@@ -53,20 +53,41 @@ a:hover {
 /* —— Header —— */
 
 .site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
   margin-bottom: 2.75rem;
   padding-bottom: 1.25rem;
   border-bottom: 1px solid var(--line);
 }
 
+img {
+  border-radius: 30px;
+}
+
 .logo {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.logo span {
   font-family: var(--sans);
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--ink);
-  text-decoration: none;
-  margin-bottom: 0.65rem;
+  line-height: 1;
+}
+
+.logo img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+  object-fit: cover;
 }
 
 .logo:hover {
@@ -78,7 +99,8 @@ a:hover {
 .site-header nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem 0.85rem;
+  align-items: center;
+  gap: 0.35rem 0.75rem;
   font-family: var(--sans);
   font-size: 0.88rem;
   line-height: 1.5;
@@ -97,7 +119,8 @@ a:hover {
 }
 
 .nav-sep {
-  display: none;
+  color: var(--muted);
+  user-select: none;
 }
 
 .tag-link.is-active {
@@ -273,6 +296,7 @@ a:hover {
   height: auto;
   max-height: 360px;
   object-fit: cover;
+  border-radius: 30px;
 }
 
 /* —— Prose: max readability —— */
@@ -382,6 +406,7 @@ a:hover {
   max-width: 100%;
   height: auto;
   display: block;
+  border-radius: 30px;
 }
 
 .prose figcaption {

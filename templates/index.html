@@ -30,7 +30,7 @@
       <ul class="post-list">
         {{range .Posts}}
         <li class="post-card">
-          <a class="post-card-link" href="{{.URL}}">
+          <a class="post-card-link" href="{{url .URL}}">
             <div class="post-card-body">
               <div class="post-meta">
                 <time datetime="{{.ParsedDate.Format "2006-01-02"}}">{{fmtDate .ParsedDate}}</time>

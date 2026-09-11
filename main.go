@@ -47,7 +47,10 @@ type PageData struct {
 	AllTags     []string
 	CurrentTag  string
 	GeneratedAt time.Time
+	Path        string
 }
+
+var currentPath string
 
 func main() {
 	if err := run(); err != nil {
@@ -77,7 +80,9 @@ func run() error {
 	tmpl, err := template.New("").Funcs(template.FuncMap{
 		"join": strings.Join,
 		"slug": slugify,
-		"url":  absURL,
+		"url": func(p string) string {
+			return relURL(currentPath, p)
+		},
 		"fmtDate": func(t time.Time) string {
 			months := []string{
 				"janvier", "février", "mars", "avril", "mai", "juin",
@@ -101,6 +106,7 @@ func run() error {
 		Posts:       posts,
 		AllTags:     tags,
 		GeneratedAt: now,
+		Path:        "/",
 	}); err != nil {
 		return err
 	}
@@ -117,6 +123,7 @@ func run() error {
 			Posts:       posts,
 			AllTags:     tags,
 			GeneratedAt: now,
+			Path:        "/posts/" + post.Slug + "/",
 		}); err != nil {
 			return err
 		}
@@ -142,6 +149,7 @@ func run() error {
 			AllTags:     tags,
 			CurrentTag:  tag,
 			GeneratedAt: now,
+			Path:        "/tags/" + slugify(tag) + "/",
 		}); err != nil {
 			return err
 		}
@@ -197,10 +205,6 @@ func parsePost(path string) (Post, error) {
 	if meta.Title == "" {
 		return Post{}, fmt.Errorf("title manquant dans le front matter")
 	}
-	if meta.Image != "" {
-		meta.Image = absURL(meta.Image)
-	}
-
 	parsedDate, err := parseDate(meta.Date)
 	if err != nil {
 		return Post{}, fmt.Errorf("date %q: %w", meta.Date, err)
@@ -210,7 +214,8 @@ func parsePost(path string) (Post, error) {
 	slug := slugify(base)
 
 	bodyStr := string(body)
-	htmlBody := mdToHTML(bodyStr)
+	pagePath := "/posts/" + slug + "/"
+	htmlBody := mdToHTML(bodyStr, pagePath)
 	excerpt := meta.Summary
 	if excerpt == "" {
 		excerpt = firstParagraph(bodyStr)
@@ -228,7 +233,7 @@ func parsePost(path string) (Post, error) {
 		Content:     template.HTML(htmlBody),
 		Excerpt:     excerpt,
 		ParsedDate:  parsedDate,
-		URL:         absURL("/posts/" + slug + "/"),
+		URL:         pagePath,
 		ReadingMins: mins,
 	}, nil
 }
@@ -317,7 +322,7 @@ func firstParagraph(md string) string {
 }
 
 // Minimal Markdown → HTML (enough for a personal blog).
-func mdToHTML(md string) string {
+func mdToHTML(md, fromPage string) string {
 	lines := strings.Split(md, "\n")
 	var out strings.Builder
 	inCode := false
@@ -330,7 +335,7 @@ func mdToHTML(md string) string {
 			return
 		}
 		out.WriteString("<p>")
-		out.WriteString(inlineMD(para.String()))
+		out.WriteString(inlineMD(para.String(), fromPage))
 		out.WriteString("</p>\n")
 		para.Reset()
 	}
@@ -388,21 +393,21 @@ func mdToHTML(md string) string {
 			flushPara()
 			closeList()
 			closeBQ()
-			out.WriteString("<h3>" + inlineMD(strings.TrimPrefix(trim, "### ")) + "</h3>\n")
+			out.WriteString("<h3>" + inlineMD(strings.TrimPrefix(trim, "### "), fromPage) + "</h3>\n")
 			continue
 		}
 		if strings.HasPrefix(trim, "## ") {
 			flushPara()
 			closeList()
 			closeBQ()
-			out.WriteString("<h2>" + inlineMD(strings.TrimPrefix(trim, "## ")) + "</h2>\n")
+			out.WriteString("<h2>" + inlineMD(strings.TrimPrefix(trim, "## "), fromPage) + "</h2>\n")
 			continue
 		}
 		if strings.HasPrefix(trim, "# ") {
 			flushPara()
 			closeList()
 			closeBQ()
-			out.WriteString("<h1>" + inlineMD(strings.TrimPrefix(trim, "# ")) + "</h1>\n")
+			out.WriteString("<h1>" + inlineMD(strings.TrimPrefix(trim, "# "), fromPage) + "</h1>\n")
 			continue
 		}
 
@@ -417,7 +422,7 @@ func mdToHTML(md string) string {
 
 		// image alone on line
 		if strings.HasPrefix(trim, "![") {
-			if alt, src, ok := parseImage(trim); ok {
+			if alt, src, ok := parseImage(trim, fromPage); ok {
 				flushPara()
 				closeList()
 				closeBQ()
@@ -435,7 +440,7 @@ func mdToHTML(md string) string {
 				out.WriteString("<ul>\n")
 				inList = true
 			}
-			out.WriteString("<li>" + inlineMD(item) + "</li>\n")
+			out.WriteString("<li>" + inlineMD(item, fromPage) + "</li>\n")
 			continue
 		}
 
@@ -447,7 +452,7 @@ func mdToHTML(md string) string {
 				out.WriteString("<blockquote>\n")
 				inBlockquote = true
 			}
-			out.WriteString("<p>" + inlineMD(strings.TrimPrefix(trim, "> ")) + "</p>\n")
+			out.WriteString("<p>" + inlineMD(strings.TrimPrefix(trim, "> "), fromPage) + "</p>\n")
 			continue
 		}
 
@@ -468,7 +473,7 @@ func mdToHTML(md string) string {
 	return out.String()
 }
 
-func parseImage(s string) (alt, src string, ok bool) {
+func parseImage(s, fromPage string) (alt, src string, ok bool) {
 	// ![alt](src)
 	if !strings.HasPrefix(s, "![") {
 		return "", "", false
@@ -483,11 +488,11 @@ func parseImage(s string) (alt, src string, ok bool) {
 	if endSrc < 0 {
 		return "", "", false
 	}
-	src = absURL(rest[:endSrc])
+	src = relURL(fromPage, rest[:endSrc])
 	return alt, src, true
 }
 
-func inlineMD(s string) string {
+func inlineMD(s, fromPage string) string {
 	// order matters: code, links/images, bold, italic
 	s = htmlEscape(s)
 
@@ -497,7 +502,7 @@ func inlineMD(s string) string {
 	})
 
 	// [text](url)
-	s = replaceLinks(s)
+	s = replaceLinks(s, fromPage)
 
 	// **bold**
 	s = replaceWrapped(s, "**", "strong")
@@ -535,7 +540,7 @@ func replaceWrapped(s, delim, tag string) string {
 	})
 }
 
-func replaceLinks(s string) string {
+func replaceLinks(s, fromPage string) string {
 	var b strings.Builder
 	for {
 		i := strings.Index(s, "[")
@@ -559,7 +564,7 @@ func replaceLinks(s string) string {
 			s = s[1:]
 			continue
 		}
-		url := absURL(rest[:endURL])
+		url := relURL(fromPage, rest[:endURL])
 		b.WriteString(`<a href="` + url + `">` + text + `</a>`)
 		s = rest[endURL+1:]
 	}
@@ -576,37 +581,50 @@ func htmlEscape(s string) string {
 	return replacer.Replace(s)
 }
 
-func normalizeBasePath(p string) string {
-	p = strings.TrimSpace(p)
-	p = strings.Trim(p, "/")
+func relURL(fromPage, target string) string {
+	if target == "" {
+		target = "/"
+	}
+	if strings.Contains(target, "://") ||
+		strings.HasPrefix(target, "//") ||
+		strings.HasPrefix(target, "mailto:") ||
+		strings.HasPrefix(target, "#") ||
+		!strings.HasPrefix(target, "/") {
+		return target
+	}
+
+	fromParts := splitURLPath(strings.Trim(fromPage, "/"))
+	keepSlash := strings.HasSuffix(target, "/")
+	toParts := splitURLPath(strings.Trim(target, "/"))
+
+	i := 0
+	for i < len(fromParts) && i < len(toParts) && fromParts[i] == toParts[i] {
+		i++
+	}
+
+	var parts []string
+	for j := i; j < len(fromParts); j++ {
+		parts = append(parts, "..")
+	}
+	parts = append(parts, toParts[i:]...)
+	if len(parts) == 0 {
+		if keepSlash {
+			return "./"
+		}
+		return "."
+	}
+	out := strings.Join(parts, "/")
+	if keepSlash {
+		out += "/"
+	}
+	return out
+}
+
+func splitURLPath(p string) []string {
 	if p == "" {
-		return ""
+		return nil
 	}
-	return "/" + p
-}
-
-func joinBasePath(prefix, path string) string {
-	if path == "" {
-		path = "/"
-	}
-	if strings.Contains(path, "://") ||
-		strings.HasPrefix(path, "//") ||
-		strings.HasPrefix(path, "mailto:") ||
-		strings.HasPrefix(path, "#") ||
-		!strings.HasPrefix(path, "/") {
-		return path
-	}
-	if prefix == "" {
-		return path
-	}
-	if path == "/" {
-		return prefix + "/"
-	}
-	return prefix + path
-}
-
-func absURL(path string) string {
-	return joinBasePath(normalizeBasePath(os.Getenv("BASE_PATH")), path)
+	return strings.Split(p, "/")
 }
 
 func slugify(s string) string {
@@ -662,6 +680,7 @@ func collectTags(posts []Post) []string {
 }
 
 func render(tmpl *template.Template, name, outPath string, data PageData) error {
+	currentPath = data.Path
 	var buf bytes.Buffer
 	if err := tmpl.ExecuteTemplate(&buf, name, data); err != nil {
 		return fmt.Errorf("render %s: %w", name, err)

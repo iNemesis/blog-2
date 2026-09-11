@@ -1,0 +1,2 @@
+- NE JAMAIS TOUCHER à docs/
+- TOUJOURS FAIRE le code le plus simple, concis et lisible possible

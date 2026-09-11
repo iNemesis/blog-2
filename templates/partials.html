@@ -1,19 +1,24 @@
 {{define "header"}}
 <header class="site-header">
-  <a class="logo" href="{{url "/"}}">Mon Blog</a>
+  <a class="logo" href="{{url "/"}}">
+    <img src="{{url "/images/atma.jpg"}}">
+    <span>ATMA</span>
+  </a>
+  <span class="nav-sep" aria-hidden="true">|</span>
   <nav>
     <a href="{{url "/"}}">Articles</a>
-    {{if .AllTags}}
-    {{range .AllTags}}
+    {{if .AllTags}}{{range .AllTags}}
     <a class="tag-link{{if eq $.CurrentTag .}} is-active{{end}}" href="{{url (printf "/tags/%s/" (slug .))}}">{{.}}</a>
-    {{end}}
-    {{end}}
+    {{end}}{{end}}
+    <span class="nav-sep" aria-hidden="true">|</span>
+    <a href="{{url "/"}}">Suivez-moi</a>
   </nav>
 </header>
 {{end}}
 
 {{define "footer"}}
 <footer class="site-footer">
-  <p>Généré le {{.GeneratedAt.Format "02/01/2006 à 15:04"}}</p>
+  <p>Dernière màj le {{.GeneratedAt.Format "02/01/2006 à 15:04"}}</p>
+  <p>Inspiré par vas3k, dhh, paulgraham & larsderidder.</p>
 </footer>
 {{end}}
