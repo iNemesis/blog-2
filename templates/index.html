@@ -81,6 +81,14 @@
           {{range .Posts}}
           <li class="post-card">
             <a class="post-card-link" href="{{url .URL}}">
+              {{if .Image}}
+              <img
+                class="post-card-thumb"
+                src="{{url .Image}}"
+                alt=""
+                loading="lazy"
+              />
+              {{end}}
               <div class="post-card-body">
                 <div class="post-meta">
                   <time datetime="{{.ParsedDate.Format `2006-01-02`}}"

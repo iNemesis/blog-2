@@ -227,7 +227,9 @@ img {
 }
 
 .post-card-link {
-  display: block;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
   text-decoration: none;
   color: inherit;
 }
@@ -238,12 +240,18 @@ img {
   text-underline-offset: 0.12em;
 }
 
-.post-card-media {
-  display: none;
+.post-card-thumb {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+  flex-shrink: 0;
 }
 
 .post-card-body {
   padding: 0;
+  flex: 1;
+  min-width: 0;
 }
 
 .post-meta {
@@ -493,6 +501,16 @@ img {
   .post-card + .post-card {
     margin-top: 1.35rem;
     padding-top: 1.35rem;
+  }
+
+  .post-card-link {
+    gap: 1rem;
+  }
+
+  .post-card-thumb {
+    width: 64px;
+    height: 64px;
+    border-radius: 10px;
   }
 }
 
