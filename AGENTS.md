@@ -1,2 +1,2 @@
-- NE JAMAIS TOUCHER à docs/
+- NE JAMAIS MODIFIER docs/ car c'est du code généré
 - TOUJOURS FAIRE le code le plus simple, concis et lisible possible
