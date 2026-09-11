@@ -1,56 +1,114 @@
 {{define "index.html"}}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{if .CurrentTag}}{{.CurrentTag}}{{else}}{{.Title}}{{end}} · Mon Blog</title>
-  <meta name="color-scheme" content="light dark">
-  <link rel="stylesheet" href="{{url "/css/style.css"}}">
-</head>
-<body>
-  <div class="wrap">
-    {{template "header" .}}
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      {{if .CurrentTag}}{{.CurrentTag}}{{else}}{{.Title}}{{end}} · Mon Blog
+    </title>
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="{{url `/css/style.css`}}" />
+  </head>
+  <body>
+    <div class="wrap">
+      {{template "header" .}}
 
-    <main>
-      <section class="hero">
-        {{if .CurrentTag}}
-        <p class="eyebrow">Tag</p>
-        <h1>{{.CurrentTag}}</h1>
-        <p class="lede"><a href="{{url "/"}}">← Tous les articles</a></p>
+      <main>
+        <section class="hero">
+          {{if .CurrentTag}}
+          <p class="eyebrow">Tag</p>
+          <h1>{{.CurrentTag}}</h1>
+          <p class="lede"><a href="{{url `/`}}">← Tous les articles</a></p>
+          {{else}}
+          <h1 class="sr-only">Mes articles</h1>
+          <p>ATMA is here.</p>
+          <p>Je suis Tech Lead chez OCTO Technology Paris.</p>
+          <nav aria-label="Réseaux et projets">
+            <ul class="social-links">
+              <li>
+                <a
+                  href="https://x.com/ATMAXXXXXXXXING"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="X (anciennement Twitter)"
+                  ><span aria-hidden="true">𝕏</span> X
+                  <span class="sr-only">(nouvelle fenêtre)</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/iNemesis"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ><span aria-hidden="true">🐙</span> Github
+                  <span class="sr-only">(nouvelle fenêtre)</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://linktr.ee/atmatalks"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ><span aria-hidden="true">🎙️</span> Podcast
+                  <span class="sr-only">(nouvelle fenêtre)</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://www.youtube.com/watch?v=sCTOunc_n_4&list=PLZtUoOQuVEuw"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ><span aria-hidden="true">🗣️</span> Conférences
+                  <span class="sr-only">(nouvelle fenêtre)</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://publication.octo.com/culture-api-no"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ><span aria-hidden="true">📚</span> Livres
+                  <span class="sr-only">(nouvelle fenêtre)</span></a
+                >
+              </li>
+            </ul>
+          </nav>
+          {{end}}
+        </section>
+
+        {{if not .Posts}}
+        <p class="empty">
+          Aucun article pour le moment. Ajoute un fichier <code>.md</code> dans
+          <code>content/</code>.
+        </p>
         {{else}}
-        <h1>Articles</h1>
-        <p class="lede">Du plus récent au plus ancien.</p>
-        {{end}}
-      </section>
-
-      {{if not .Posts}}
-      <p class="empty">Aucun article pour le moment. Ajoute un fichier <code>.md</code> dans <code>content/</code>.</p>
-      {{else}}
-      <ul class="post-list">
-        {{range .Posts}}
-        <li class="post-card">
-          <a class="post-card-link" href="{{url .URL}}">
-            <div class="post-card-body">
-              <div class="post-meta">
-                <time datetime="{{.ParsedDate.Format "2006-01-02"}}">{{fmtDate .ParsedDate}}</time>
-                <span>·</span>
-                <span>{{.ReadingMins}} min</span>
+        <ul class="post-list">
+          {{range .Posts}}
+          <li class="post-card">
+            <a class="post-card-link" href="{{url .URL}}">
+              <div class="post-card-body">
+                <div class="post-meta">
+                  <time datetime="{{.ParsedDate.Format `2006-01-02`}}"
+                    >{{fmtDate .ParsedDate}}</time
+                  >
+                  <span aria-hidden="true">·</span>
+                  <span>{{.ReadingMins}} min</span>
+                </div>
+                <h2>{{.Title}}</h2>
+                {{if .Excerpt}}
+                <p class="excerpt">{{.Excerpt}}</p>
+                {{end}}
               </div>
-              <h2>{{.Title}}</h2>
-              {{if .Excerpt}}
-              <p class="excerpt">{{.Excerpt}}</p>
-              {{end}}
-            </div>
-          </a>
-        </li>
+            </a>
+          </li>
+          {{end}}
+        </ul>
         {{end}}
-      </ul>
-      {{end}}
-    </main>
+      </main>
 
-    {{template "footer" .}}
-  </div>
-</body>
+      {{template "footer" .}}
+    </div>
+  </body>
 </html>
 {{end}}
