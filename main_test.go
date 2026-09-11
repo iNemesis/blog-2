@@ -3,6 +3,7 @@ package main
 import (
 	"strings"
 	"testing"
+	"unicode/utf8"
 )
 
 func TestRelURL(t *testing.T) {
@@ -53,5 +54,37 @@ func TestMdToHTMLLeavesExternalURLs(t *testing.T) {
 	html := mdToHTML("[doc](https://go.dev/doc/)", "/posts/slug/")
 	if !strings.Contains(html, `href="https://go.dev/doc/"`) {
 		t.Errorf("external URL was rewritten:\n%s", html)
+	}
+}
+
+func TestMdToHTMLLists(t *testing.T) {
+	html := mdToHTML("- un\n- deux\n\n1. premier\n2. deuxième", "/")
+	for _, want := range []string{
+		"<ul>", "<li>un</li>", "<li>deux</li>", "</ul>",
+		"<ol>", "<li>premier</li>", "<li>deuxième</li>", "</ol>",
+	} {
+		if !strings.Contains(html, want) {
+			t.Errorf("manque %q dans :\n%s", want, html)
+		}
+	}
+}
+
+func TestMdToHTMLNestedList(t *testing.T) {
+	html := mdToHTML("- a\n  - b\n- c", "/")
+	if !strings.Contains(html, "<li>a<ul>") {
+		t.Errorf("liste imbriquée hors du <li> parent :\n%s", html)
+	}
+	if !strings.Contains(html, "</ul>\n</li>") {
+		t.Errorf("fermeture de liste imbriquée incorrecte :\n%s", html)
+	}
+}
+
+func TestFirstParagraphTruncatesOnRunes(t *testing.T) {
+	ex := firstParagraph(strings.Repeat("é", 300))
+	if !utf8.ValidString(ex) {
+		t.Errorf("extrait avec UTF-8 invalide : %q", ex)
+	}
+	if !strings.HasSuffix(ex, "…") {
+		t.Errorf("extrait non tronqué : %q", ex)
 	}
 }

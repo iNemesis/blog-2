@@ -4,9 +4,11 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"io"
 	"io/fs"
+	"net"
 	"os"
 	"path"
 	"path/filepath"
@@ -43,6 +45,17 @@ func main() {
 		remoteBase = "/"
 	}
 
+	hostKey := os.Getenv("SFTP_HOST_KEY")
+	if hostKey == "" {
+		fmt.Fprintln(os.Stderr, "Erreur : SFTP_HOST_KEY manquant dans .env — récupère la clé avec : ssh-keyscan -p <port> <host>")
+		os.Exit(1)
+	}
+	pinned, err := parseHostKey(hostKey)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Erreur SFTP_HOST_KEY : %v\n", err)
+		os.Exit(1)
+	}
+
 	var authMethods []ssh.AuthMethod
 	if keyPath != "" {
 		keyBytes, err := os.ReadFile(keyPath)
@@ -69,7 +82,7 @@ func main() {
 	sshConfig := &ssh.ClientConfig{
 		User:            user,
 		Auth:            authMethods,
-		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+		HostKeyCallback: hostKeyCallback(pinned),
 		Timeout:         15 * time.Second,
 	}
 
@@ -170,6 +183,30 @@ func loadEnv(path string) {
 			}
 		}
 	}
+}
+
+// hostKeyCallback vérifie la clé d'hôte du serveur contre celle épinglée dans .env.
+func hostKeyCallback(pinned ssh.PublicKey) ssh.HostKeyCallback {
+	return func(hostname string, remote net.Addr, key ssh.PublicKey) error {
+		if key.Type() == pinned.Type() && bytes.Equal(key.Marshal(), pinned.Marshal()) {
+			return nil
+		}
+		return fmt.Errorf("clé d'hôte de %s inattendue (%s) — vérifie SFTP_HOST_KEY dans .env",
+			hostname, ssh.FingerprintSHA256(key))
+	}
+}
+
+// parseHostKey accepte une ligne ssh-keyscan ("host type clé") ou "type clé".
+func parseHostKey(s string) (ssh.PublicKey, error) {
+	fields := strings.Fields(strings.TrimSpace(s))
+	if len(fields) > 2 {
+		fields = fields[len(fields)-2:]
+	}
+	if len(fields) < 2 {
+		return nil, fmt.Errorf("format attendu : \"type clé\" (sortie de ssh-keyscan)")
+	}
+	key, _, _, _, err := ssh.ParseAuthorizedKey([]byte(strings.Join(fields, " ")))
+	return key, err
 }
 
 func formatSize(b int64) string {

@@ -31,11 +31,29 @@ draft: false
 Contenu Markdown ici.
 ```
 
+## Configuration (`main.go`)
+
+- `siteURL` : domaine public du site, ex. `"https://monblog.fr"` (sans `/` final).
+  Tant qu'il est vide, le flux Atom (`atom.xml`), `sitemap.xml`, `robots.txt`,
+  la balise `canonical` et les URLs Open Graph absolues ne sont pas générés.
+
+## Déploiement
+
+En plus de `SFTP_HOST`, `SFTP_USER` et (`SFTP_PASSWORD` ou `SFTP_KEY_PATH`), `.env`
+doit épingler la clé d'hôte du serveur :
+
+```
+SFTP_HOST_KEY=<sortie de : ssh-keyscan -p <port> <host>>
+```
+
+La connexion échoue si la clé du serveur change (protection MITM).
+
 ## Commandes
 
 | Commande | Description |
 |---|---|
 | `make` ou `go run .` | Génère le site dans `docs/` |
+| `make serve` | Génère puis sert `docs/` sur http://localhost:8080 |
 | `make test` | Lance les tests (`go test ./...`) |
 | `make fmt` | Formate le code Go et les templates HTML |
 | `make optimize` | Optimise les images sans perte |
@@ -46,7 +64,7 @@ Contenu Markdown ici.
 ## Prévisualisation locale
 
 ```bash
-cd docs && python -m http.server 8080
+make serve
 ```
 
-Accéder ensuite à : http://localhost:8080
+Puis ouvrir : http://localhost:8080

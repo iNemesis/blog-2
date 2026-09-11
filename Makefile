@@ -1,4 +1,4 @@
-.PHONY: all run fmt fmt-html fmt-go test optimize optimize-lossy deploy help
+.PHONY: all run serve fmt fmt-html fmt-go test optimize optimize-lossy deploy help
 
 ## 🚀 Génère le site (par défaut)
 all: run
@@ -6,6 +6,10 @@ all: run
 ## 🚀 Génère le site
 run:
 	go run .
+
+## 👀 Génère puis prévisualise sur http://localhost:8080
+serve: run
+	cd docs && python -m http.server 8080
 
 ## 🧹 Formate les templates HTML
 fmt-html:

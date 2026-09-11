@@ -1,3 +1,34 @@
+{{define "head"}}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>
+    {{if .CurrentTag}}{{.CurrentTag}}{{else}}{{.Title}}{{end}} · Mon Blog
+  </title>
+  {{with .Description}}<meta name="description" content="{{.}}" />{{end}}
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="{{url `/images/atma.jpg`}}" />
+  {{with abs .Path}}<link rel="canonical" href="{{.}}" />{{end}}
+  <meta property="og:site_name" content="Mon Blog" />
+  <meta property="og:type" content="{{if .Post}}article{{else}}website{{end}}" />
+  <meta
+    property="og:title"
+    content="{{if .CurrentTag}}{{.CurrentTag}}{{else}}{{.Title}}{{end}}"
+  />
+  {{with .Description}}<meta property="og:description" content="{{.}}" />{{end}}
+  {{with abs .Path}}<meta property="og:url" content="{{.}}" />{{end}}
+  {{if .Post}}
+  {{with abs .Post.Image}}<meta property="og:image" content="{{.}}" />{{end}}
+  {{else}}
+  {{with abs `/images/atma.jpg`}}<meta property="og:image" content="{{.}}" />{{end}}
+  {{end}}
+  {{with abs `/atom.xml`}}<link
+    rel="alternate"
+    type="application/atom+xml"
+    title="Mon Blog"
+    href="{{.}}"
+  />{{end}}
+  <link rel="stylesheet" href="{{url `/css/style.css`}}" />
+{{end}}
 {{define "header"}}
 <header class="site-header">
   <a class="logo" href="{{url `/`}}">

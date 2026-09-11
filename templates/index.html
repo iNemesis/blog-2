@@ -2,13 +2,7 @@
 <!doctype html>
 <html lang="fr">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>
-      {{if .CurrentTag}}{{.CurrentTag}}{{else}}{{.Title}}{{end}} · Mon Blog
-    </title>
-    <meta name="color-scheme" content="light dark" />
-    <link rel="stylesheet" href="{{url `/css/style.css`}}" />
+    {{template "head" .}}
   </head>
   <body>
     <div class="wrap">

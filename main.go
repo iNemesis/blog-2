@@ -19,6 +19,14 @@ const (
 	templateDir = "templates"
 	staticDir   = "static"
 	outputDir   = "docs"
+
+	// Domaine public du site, ex. "https://monblog.fr" (sans / final).
+	// Vide, il désactive : flux Atom, sitemap.xml, robots.txt, canonical
+	// et URLs Open Graph absolues.
+	siteURL = "https://www.atmaaa.fr"
+	// Nom et description du site (flux Atom, meta description de l'accueil).
+	siteName        = "ATMA's blog"
+	siteDescription = "Parlons tech, parlons lead, parlons cuisine."
 )
 
 type FrontMatter struct {
@@ -42,6 +50,7 @@ type Post struct {
 
 type PageData struct {
 	Title       string
+	Description string
 	Posts       []Post
 	Post        *Post
 	AllTags     []string
@@ -49,8 +58,6 @@ type PageData struct {
 	GeneratedAt time.Time
 	Path        string
 }
-
-var currentPath string
 
 func main() {
 	if err := run(); err != nil {
@@ -80,8 +87,14 @@ func run() error {
 	tmpl, err := template.New("").Funcs(template.FuncMap{
 		"join": strings.Join,
 		"slug": slugify,
-		"url": func(p string) string {
-			return relURL(currentPath, p)
+		// "url" est redéfini par page dans render() : relURL dépend du chemin
+		// de la page en cours de rendu.
+		"url": func(p string) string { return p },
+		"abs": func(p string) string {
+			if siteURL == "" {
+				return ""
+			}
+			return siteURL + p
 		},
 		"fmtDate": func(t time.Time) string {
 			months := []string{
@@ -103,6 +116,7 @@ func run() error {
 
 	if err := render(tmpl, "index.html", filepath.Join(outputDir, "index.html"), PageData{
 		Title:       "Blog",
+		Description: siteDescription,
 		Posts:       posts,
 		AllTags:     tags,
 		GeneratedAt: now,
@@ -119,6 +133,7 @@ func run() error {
 		}
 		if err := render(tmpl, "post.html", filepath.Join(dir, "index.html"), PageData{
 			Title:       post.Title,
+			Description: post.Excerpt,
 			Post:        &post,
 			Posts:       posts,
 			AllTags:     tags,
@@ -145,6 +160,7 @@ func run() error {
 		}
 		if err := render(tmpl, "index.html", filepath.Join(dir, "index.html"), PageData{
 			Title:       "Tag: " + tag,
+			Description: "Articles tagués « " + tag + " ».",
 			Posts:       filtered,
 			AllTags:     tags,
 			CurrentTag:  tag,
@@ -155,7 +171,17 @@ func run() error {
 		}
 	}
 
-	return nil
+	if siteURL == "" {
+		fmt.Println("  siteURL vide dans main.go : Atom, sitemap, robots et canonical désactivés")
+		return nil
+	}
+	if err := writeAtom(posts, now); err != nil {
+		return err
+	}
+	if err := writeSitemap(posts, tags); err != nil {
+		return err
+	}
+	return writeRobots()
 }
 
 func loadPosts(dir string) ([]Post, error) {
@@ -293,12 +319,14 @@ func firstParagraph(md string) string {
 		}
 		// skip headings, lists, code fences, images at start
 		if !started {
+			_, ordered := orderedItem(trim)
 			if strings.HasPrefix(trim, "#") ||
 				strings.HasPrefix(trim, "```") ||
 				strings.HasPrefix(trim, "![") ||
 				strings.HasPrefix(trim, "- ") ||
 				strings.HasPrefix(trim, "* ") ||
-				strings.HasPrefix(trim, "> ") {
+				strings.HasPrefix(trim, "> ") ||
+				ordered {
 				continue
 			}
 		}
@@ -315,8 +343,8 @@ func firstParagraph(md string) string {
 	ex = strings.ReplaceAll(ex, "*", "")
 	ex = strings.ReplaceAll(ex, "_", "")
 	ex = strings.ReplaceAll(ex, "`", "")
-	if len(ex) > 280 {
-		ex = ex[:277] + "…"
+	if runes := []rune(ex); len(runes) > 280 {
+		ex = string(runes[:277]) + "…"
 	}
 	return ex
 }
@@ -326,8 +354,8 @@ func mdToHTML(md, fromPage string) string {
 	lines := strings.Split(md, "\n")
 	var out strings.Builder
 	inCode := false
-	inList := false
 	inBlockquote := false
+	var lists []openList // pile des listes ouvertes (ul/ol imbriquées)
 	var para strings.Builder
 
 	flushPara := func() {
@@ -339,10 +367,17 @@ func mdToHTML(md, fromPage string) string {
 		out.WriteString("</p>\n")
 		para.Reset()
 	}
-	closeList := func() {
-		if inList {
-			out.WriteString("</ul>\n")
-			inList = false
+	closeItem := func() {
+		if n := len(lists); n > 0 && lists[n-1].liOpen {
+			out.WriteString("</li>\n")
+			lists[n-1].liOpen = false
+		}
+	}
+	closeLists := func() {
+		for len(lists) > 0 {
+			closeItem()
+			out.WriteString("</" + lists[len(lists)-1].tag + ">\n")
+			lists = lists[:len(lists)-1]
 		}
 	}
 	closeBQ := func() {
@@ -358,7 +393,7 @@ func mdToHTML(md, fromPage string) string {
 
 		if strings.HasPrefix(trim, "```") {
 			flushPara()
-			closeList()
+			closeLists()
 			closeBQ()
 			if !inCode {
 				lang := strings.TrimPrefix(trim, "```")
@@ -383,7 +418,7 @@ func mdToHTML(md, fromPage string) string {
 
 		if trim == "" {
 			flushPara()
-			closeList()
+			closeLists()
 			closeBQ()
 			continue
 		}
@@ -391,21 +426,21 @@ func mdToHTML(md, fromPage string) string {
 		// headings
 		if strings.HasPrefix(trim, "### ") {
 			flushPara()
-			closeList()
+			closeLists()
 			closeBQ()
 			out.WriteString("<h3>" + inlineMD(strings.TrimPrefix(trim, "### "), fromPage) + "</h3>\n")
 			continue
 		}
 		if strings.HasPrefix(trim, "## ") {
 			flushPara()
-			closeList()
+			closeLists()
 			closeBQ()
 			out.WriteString("<h2>" + inlineMD(strings.TrimPrefix(trim, "## "), fromPage) + "</h2>\n")
 			continue
 		}
 		if strings.HasPrefix(trim, "# ") {
 			flushPara()
-			closeList()
+			closeLists()
 			closeBQ()
 			out.WriteString("<h1>" + inlineMD(strings.TrimPrefix(trim, "# "), fromPage) + "</h1>\n")
 			continue
@@ -414,7 +449,7 @@ func mdToHTML(md, fromPage string) string {
 		// hr
 		if trim == "---" || trim == "***" || trim == "___" {
 			flushPara()
-			closeList()
+			closeLists()
 			closeBQ()
 			out.WriteString("<hr>\n")
 			continue
@@ -424,30 +459,43 @@ func mdToHTML(md, fromPage string) string {
 		if strings.HasPrefix(trim, "![") {
 			if alt, src, ok := parseImage(trim, fromPage); ok {
 				flushPara()
-				closeList()
+				closeLists()
 				closeBQ()
 				out.WriteString(`<figure><img src="` + htmlEscape(src) + `" alt="` + htmlEscape(alt) + `" loading="lazy"></figure>` + "\n")
 				continue
 			}
 		}
 
-		// unordered list
-		if strings.HasPrefix(trim, "- ") || strings.HasPrefix(trim, "* ") {
+		// list items : "- ", "* ", "1. " — imbrication par indentation (2 espaces)
+		if typ, text, depth, ok := parseListItem(line, trim); ok {
 			flushPara()
 			closeBQ()
-			item := trim[2:]
-			if !inList {
-				out.WriteString("<ul>\n")
-				inList = true
+			for len(lists) > depth+1 {
+				closeItem()
+				out.WriteString("</" + lists[len(lists)-1].tag + ">\n")
+				lists = lists[:len(lists)-1]
 			}
-			out.WriteString("<li>" + inlineMD(item, fromPage) + "</li>\n")
+			if len(lists) == depth+1 {
+				closeItem()
+				if lists[len(lists)-1].tag != typ {
+					out.WriteString("</" + lists[len(lists)-1].tag + ">\n")
+					lists[len(lists)-1].tag = typ
+					out.WriteString("<" + typ + ">\n")
+				}
+			}
+			for len(lists) < depth+1 {
+				out.WriteString("<" + typ + ">\n")
+				lists = append(lists, openList{tag: typ})
+			}
+			out.WriteString("<li>" + inlineMD(text, fromPage))
+			lists[len(lists)-1].liOpen = true
 			continue
 		}
 
 		// blockquote
 		if strings.HasPrefix(trim, "> ") {
 			flushPara()
-			closeList()
+			closeLists()
 			if !inBlockquote {
 				out.WriteString("<blockquote>\n")
 				inBlockquote = true
@@ -456,7 +504,7 @@ func mdToHTML(md, fromPage string) string {
 			continue
 		}
 
-		closeList()
+		closeLists()
 		closeBQ()
 		if para.Len() > 0 {
 			para.WriteByte(' ')
@@ -465,7 +513,7 @@ func mdToHTML(md, fromPage string) string {
 	}
 
 	flushPara()
-	closeList()
+	closeLists()
 	closeBQ()
 	if inCode {
 		out.WriteString("</code></pre>\n")
@@ -680,9 +728,17 @@ func collectTags(posts []Post) []string {
 }
 
 func render(tmpl *template.Template, name, outPath string, data PageData) error {
-	currentPath = data.Path
+	// Clone par page : la fonction "url" dépend du chemin de la page rendue.
+	pageTmpl, err := tmpl.Clone()
+	if err != nil {
+		return err
+	}
+	pagePath := data.Path
+	pageTmpl.Funcs(template.FuncMap{
+		"url": func(p string) string { return relURL(pagePath, p) },
+	})
 	var buf bytes.Buffer
-	if err := tmpl.ExecuteTemplate(&buf, name, data); err != nil {
+	if err := pageTmpl.ExecuteTemplate(&buf, name, data); err != nil {
 		return fmt.Errorf("render %s: %w", name, err)
 	}
 	if err := os.MkdirAll(filepath.Dir(outPath), 0o755); err != nil {
@@ -734,4 +790,99 @@ func copyFile(src, dst string) error {
 	defer out.Close()
 	_, err = io.Copy(out, in)
 	return err
+}
+
+// openList : liste ouverte pendant le rendu Markdown (tag + <li> en cours).
+type openList struct {
+	tag    string
+	liOpen bool
+}
+
+// parseListItem reconnaît un item de liste ("- ", "* ", "1. ") et retourne son
+// type, son texte et sa profondeur (2 espaces ou 1 tabulation par niveau).
+func parseListItem(line, trim string) (typ, text string, depth int, ok bool) {
+	lead := line[:len(line)-len(strings.TrimLeft(line, " \t"))]
+	depth = (strings.Count(lead, " ") + 2*strings.Count(lead, "\t")) / 2
+	switch {
+	case strings.HasPrefix(trim, "- "), strings.HasPrefix(trim, "* "):
+		return "ul", trim[2:], depth, true
+	}
+	if rest, ok := orderedItem(trim); ok {
+		return "ol", rest, depth, true
+	}
+	return "", "", 0, false
+}
+
+// orderedItem reconnaît un item de liste ordonnée ("12. " ou "12) ").
+func orderedItem(s string) (string, bool) {
+	i := 0
+	for i < len(s) && s[i] >= '0' && s[i] <= '9' {
+		i++
+	}
+	if i == 0 || i > 3 || i+1 >= len(s) ||
+		(s[i] != '.' && s[i] != ')') ||
+		(s[i+1] != ' ' && s[i+1] != '\t') {
+		return "", false
+	}
+	return strings.TrimLeft(s[i+2:], " \t"), true
+}
+
+// writeAtom génère le flux Atom des 20 derniers articles (URLs absolues).
+func writeAtom(posts []Post, now time.Time) error {
+	updated := now
+	if len(posts) > 0 {
+		updated = posts[0].ParsedDate
+	}
+	var b strings.Builder
+	b.WriteString(`<?xml version="1.0" encoding="utf-8"?>` + "\n")
+	b.WriteString(`<feed xmlns="http://www.w3.org/2005/Atom">` + "\n")
+	fmt.Fprintf(&b, "  <title>%s</title>\n", htmlEscape(siteName))
+	fmt.Fprintf(&b, "  <id>%s/</id>\n", siteURL)
+	fmt.Fprintf(&b, "  <link href=\"%s/\"/>\n", siteURL)
+	fmt.Fprintf(&b, "  <link rel=\"self\" href=\"%s/atom.xml\"/>\n", siteURL)
+	fmt.Fprintf(&b, "  <updated>%s</updated>\n", updated.Format(time.RFC3339))
+	fmt.Fprintf(&b, "  <author><name>%s</name></author>\n", htmlEscape(siteName))
+	for i, p := range posts {
+		if i == 20 {
+			break
+		}
+		fmt.Fprintf(&b, "  <entry>\n")
+		fmt.Fprintf(&b, "    <title>%s</title>\n", htmlEscape(p.Title))
+		fmt.Fprintf(&b, "    <id>%s%s</id>\n", siteURL, p.URL)
+		fmt.Fprintf(&b, "    <link href=\"%s%s\"/>\n", siteURL, p.URL)
+		fmt.Fprintf(&b, "    <updated>%s</updated>\n", p.ParsedDate.Format(time.RFC3339))
+		if p.Excerpt != "" {
+			fmt.Fprintf(&b, "    <summary>%s</summary>\n", htmlEscape(p.Excerpt))
+		}
+		b.WriteString("  </entry>\n")
+	}
+	b.WriteString("</feed>\n")
+	return os.WriteFile(filepath.Join(outputDir, "atom.xml"), []byte(b.String()), 0o644)
+}
+
+func writeSitemap(posts []Post, tags []string) error {
+	var b strings.Builder
+	b.WriteString(`<?xml version="1.0" encoding="utf-8"?>` + "\n")
+	b.WriteString(`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">` + "\n")
+	entry := func(p string, lastmod time.Time) {
+		b.WriteString("<url><loc>" + siteURL + p + "</loc>")
+		if !lastmod.IsZero() {
+			b.WriteString("<lastmod>" + lastmod.Format("2006-01-02") + "</lastmod>")
+		}
+		b.WriteString("</url>\n")
+	}
+	entry("/", time.Time{})
+	for _, p := range posts {
+		entry(p.URL, p.ParsedDate)
+	}
+	for _, t := range tags {
+		entry("/tags/"+slugify(t)+"/", time.Time{})
+	}
+	b.WriteString("</urlset>\n")
+	return os.WriteFile(filepath.Join(outputDir, "sitemap.xml"), []byte(b.String()), 0o644)
+}
+
+func writeRobots() error {
+	robots := "User-agent: *\nAllow: /\nSitemap: " + siteURL + "/sitemap.xml\n"
+	return os.WriteFile(filepath.Join(outputDir, "robots.txt"), []byte(robots), 0o644)
 }
