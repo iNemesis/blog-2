@@ -62,6 +62,10 @@ a:hover {
   border-bottom: 1px solid var(--line);
 }
 
+img {
+  border-radius: 30px;
+}
+
 .logo {
   display: inline-flex;
   align-items: center;
@@ -292,6 +296,7 @@ a:hover {
   height: auto;
   max-height: 360px;
   object-fit: cover;
+  border-radius: 30px;
 }
 
 /* —— Prose: max readability —— */
@@ -401,6 +406,7 @@ a:hover {
   max-width: 100%;
   height: auto;
   display: block;
+  border-radius: 30px;
 }
 
 .prose figcaption {
