@@ -1,49 +1,52 @@
 # Blog statique (Go)
 
-Génère un site statique à partir de fichiers Markdown.
+Générateur de site statique en Go, simple et sans dépendance superflue. Compile des articles Markdown en HTML statique.
 
 ## Structure
 
-```
-content/          → tes articles (.md)
-templates/        → HTML (base, index, post)
-static/           → CSS, images, favicon…
-public/           → site généré (à uploader)
-main.go           → générateur
+```text
+content/          → Articles Markdown (.md)
+templates/        → Templates HTML (base, index, post)
+static/           → Assets statiques copiés tels quels (CSS, images...)
+docs/             → Site généré (⚠️ ne pas modifier manuellement)
+tools/            → Outils de déploiement SFTP et optimisation d'images
+main.go           → Moteur de rendu
+Makefile          → Raccourcis de développement
 ```
 
-## Front matter
+## Front matter (`content/*.md`)
 
 ```yaml
 ---
 title: Titre de l'article
-date: 2026-07-31
+date: 2026-09-11
 tags:
   - go
   - blog
 image: /images/ma-photo.jpg
-summary: Optionnel — sinon le 1er paragraphe est utilisé
+summary: Optionnel — le 1er paragraphe est utilisé par défaut
 draft: false
 ---
 
 Contenu Markdown ici.
 ```
 
-## Générer
+## Commandes
+
+| Commande | Description |
+|---|---|
+| `make` ou `go run .` | Génère le site dans `docs/` |
+| `make test` | Lance les tests (`go test ./...`) |
+| `make fmt` | Formate le code Go et les templates HTML |
+| `make optimize` | Optimise les images sans perte |
+| `make optimize-lossy` | Compresse les images avec perte |
+| `make deploy` | Déploie `docs/` sur le serveur SFTP |
+| `make help` | Liste toutes les cibles du Makefile |
+
+## Prévisualisation locale
 
 ```bash
-go run .
+cd docs && python -m http.server 8080
 ```
 
-Le site est écrit dans `public/`. Pour prévisualiser :
-
-```bash
-# PowerShell
-cd public; python -m http.server 8080
-```
-
-Puis ouvre http://localhost:8080
-
-## Publier
-
-Envoie le contenu de `public/` sur ton hébergement (OVH, Netlify, etc.).
+Accéder ensuite à : http://localhost:8080
