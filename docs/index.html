@@ -1,32 +1,50 @@
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Blog · Mon Blog</title>
-  <meta name="color-scheme" content="light dark">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <div class="wrap">
-    
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      Blog · Mon Blog
+    </title>
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      
 <header class="site-header">
   <a class="logo" href="./">
-    <img src="images/atma.jpg">
+    <img src="images/atma.jpg" />
     <span>ATMA</span>
   </a>
   <span class="nav-sep" aria-hidden="true">|</span>
   <nav>
     <a href="./">Articles</a>
     
-    <a class="tag-link" href="tags/ecriture/">ecriture</a>
+    <a
+      class="tag-link"
+      href="tags/ecriture/"
+      >ecriture</a
+    >
     
-    <a class="tag-link" href="tags/go/">go</a>
+    <a
+      class="tag-link"
+      href="tags/go/"
+      >go</a
+    >
     
-    <a class="tag-link" href="tags/markdown/">markdown</a>
+    <a
+      class="tag-link"
+      href="tags/markdown/"
+      >markdown</a
+    >
     
-    <a class="tag-link" href="tags/meta/">meta</a>
+    <a
+      class="tag-link"
+      href="tags/meta/"
+      >meta</a
+    >
     
     <span class="nav-sep" aria-hidden="true">|</span>
     <a href="./">Suivez-moi</a>
@@ -34,62 +52,116 @@
 </header>
 
 
-    <main>
-      <section class="hero">
+      <main>
+        <section class="hero">
+          
+          <h1 class="sr-only">Mes articles</h1>
+          <p>ATMA is here.</p>
+          <p>Je suis Tech Lead chez OCTO Technology Paris.</p>
+          <nav aria-label="Réseaux et projets">
+            <ul class="social-links">
+              <li>
+                <a
+                  href="https://x.com/ATMAXXXXXXXXING"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="X (anciennement Twitter)"
+                  ><span aria-hidden="true">𝕏</span> X
+                  <span class="sr-only">(nouvelle fenêtre)</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/iNemesis"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ><span aria-hidden="true">🐙</span> Github
+                  <span class="sr-only">(nouvelle fenêtre)</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://linktr.ee/atmatalks"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ><span aria-hidden="true">🎙️</span> Podcast
+                  <span class="sr-only">(nouvelle fenêtre)</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://www.youtube.com/watch?v=sCTOunc_n_4&list=PLZtUoOQuVEuw"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ><span aria-hidden="true">🗣️</span> Conférences
+                  <span class="sr-only">(nouvelle fenêtre)</span></a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://publication.octo.com/culture-api-no"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  ><span aria-hidden="true">📚</span> Livres
+                  <span class="sr-only">(nouvelle fenêtre)</span></a
+                >
+              </li>
+            </ul>
+          </nav>
+          
+        </section>
+
         
-        <p>Yoooo, ATMA is here.</p>
-        <p>Je suis Tech Lead chez OCTO Technologies, à Paris. Retrouvez mes conférences, livres et podcasts ici.</p>
-        <p>Mes avis sont parfois tranchés, pinguez-moi pour les nuancer.</p>
-        <p>
-          <a href="https://x.com/ATMAXXXXXXXXING">𝕏 X</a> <a href="https://github.com/iNemesis">🐙 Github</a> <a href="https://linktr.ee/atmatalks">🎙️ Podcast</a> <a href="https://www.youtube.com/watch?v=sCTOunc_n_4&list=PLZtUoOQuVEuw">🗣️ Conférences</a> <a href="https://publication.octo.com/culture-api-no">📚 Livres</a>
-        </p>
+        <ul class="post-list">
+          
+          <li class="post-card">
+            <a class="post-card-link" href="posts/notes-sur-le-markdown/">
+              <div class="post-card-body">
+                <div class="post-meta">
+                  <time datetime="2026-07-28"
+                    >28 juillet 2026</time
+                  >
+                  <span aria-hidden="true">·</span>
+                  <span>1 min</span>
+                </div>
+                <h2>Notes sur le Markdown</h2>
+                
+                <p class="excerpt">Un rappel concis de la syntaxe supportée par le générateur, pour écrire sans friction.</p>
+                
+              </div>
+            </a>
+          </li>
+          
+          <li class="post-card">
+            <a class="post-card-link" href="posts/premier-article/">
+              <div class="post-card-body">
+                <div class="post-meta">
+                  <time datetime="2026-07-20"
+                    >20 juillet 2026</time
+                  >
+                  <span aria-hidden="true">·</span>
+                  <span>1 min</span>
+                </div>
+                <h2>Bienvenue sur mon blog</h2>
+                
+                <p class="excerpt">Voici le premier paragraphe : c&#39;est lui qui apparaît en extrait sur la page d&#39;accueil, juste sous le titre. Tu peux aussi forcer un résumé avec le champ summary du front matter.</p>
+                
+              </div>
+            </a>
+          </li>
+          
+        </ul>
         
-      </section>
+      </main>
 
       
-      <ul class="post-list">
-        
-        <li class="post-card">
-          <a class="post-card-link" href="posts/notes-sur-le-markdown/">
-            <div class="post-card-body">
-              <div class="post-meta">
-                <time datetime="2026-07-28">28 juillet 2026</time>
-                <span>·</span>
-                <span>1 min</span>
-              </div>
-              <h2>Notes sur le Markdown</h2>
-              
-              <p class="excerpt">Un rappel concis de la syntaxe supportée par le générateur, pour écrire sans friction.</p>
-              
-            </div>
-          </a>
-        </li>
-        
-        <li class="post-card">
-          <a class="post-card-link" href="posts/premier-article/">
-            <div class="post-card-body">
-              <div class="post-meta">
-                <time datetime="2026-07-20">20 juillet 2026</time>
-                <span>·</span>
-                <span>1 min</span>
-              </div>
-              <h2>Bienvenue sur mon blog</h2>
-              
-              <p class="excerpt">Voici le premier paragraphe : c&#39;est lui qui apparaît en extrait sur la page d&#39;accueil, juste sous le titre. Tu peux aussi forcer un résumé avec le champ summary du front matter.</p>
-              
-            </div>
-          </a>
-        </li>
-        
-      </ul>
-      
-    </main>
-
-    
 <footer class="site-footer">
-  <p>Dernière màj le 11/09/2026 à 18:19 ~ Inspiré par vas3k, dhh, paulgraham & larsderidder.</p>
+  <p>
+    Dernière màj le 11/09/2026 à 22:26 ~ Inspiré par
+    vas3k, dhh, paulgraham & larsderidder.
+  </p>
 </footer>
 
-  </div>
-</body>
+    </div>
+  </body>
 </html>

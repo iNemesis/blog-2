@@ -4,7 +4,7 @@ date: 2026-07-28
 tags:
   - markdown
   - ecriture
-image: /images/markdown.jpg
+image: /images/kuzco.jpg
 summary: Un rappel concis de la syntaxe supportée par le générateur, pour écrire sans friction.
 ---
 
@@ -18,9 +18,12 @@ Tu disposes de :
 - **Gras**, *italique*, `code inline`
 - Listes à puces
 - Citations
-- Images `![alt](/chemin.jpg)`
+- Images `![alt](/images/kuzco.jpg)`
 - Liens `[texte](url)`
 - Blocs de code avec langage
+
+
+![alt](/images/kuzco.jpg)
 
 ### Astuce image de couverture
 

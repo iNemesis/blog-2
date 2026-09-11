@@ -1,4 +1,4 @@
-.PHONY: all run fmt fmt-html fmt-go test
+.PHONY: all run fmt fmt-html fmt-go test optimize optimize-lossy
 
 all: run
 
@@ -15,3 +15,9 @@ fmt: fmt-html fmt-go
 
 test:
 	go test ./...
+
+optimize:
+	go run tools/optimize.go
+
+optimize-lossy:
+	go run tools/optimize.go -lossy

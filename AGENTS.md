@@ -1,2 +1,3 @@
 - NE JAMAIS MODIFIER docs/ car c'est du code généré
 - TOUJOURS FAIRE le code le plus simple, concis et lisible possible
+- TOUJOURS me proposer 3 solutions avant de coder, et conseilles-moi en une
