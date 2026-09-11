@@ -1,7 +1,7 @@
 .PHONY: all run serve fmt fmt-html fmt-go test optimize optimize-lossy deploy help
 
 ## 🚀 Génère le site (par défaut)
-all: run
+all: run help
 
 ## 🚀 Génère le site
 run:
@@ -40,4 +40,13 @@ deploy:
 
 ## ❓ Affiche cette aide
 help:
-	@awk '/^## / { desc = substr($$0, 4); next } desc && /^[a-zA-Z_-]+:/ { sub(/:.*/, "", $$1); printf "  \033[36m%-16s\033[0m %s\n", $$1, desc; desc = "" }' $(MAKEFILE_LIST)
+	@echo "  🚀 all              Generer le site (defaut)"
+	@echo "  👀 serve            Previsualiser sur http://localhost:8080"
+	@echo "  🧹 fmt              Formater le code Go et HTML"
+	@echo "  🧹 fmt-html         Formater les templates HTML"
+	@echo "  🧹 fmt-go           Formater les fichiers Go"
+	@echo "  🧪 test             Executer les tests"
+	@echo "  🖼️ optimize         Optimiser les images sans perte"
+	@echo "  🖼️ optimize-lossy   Compresser les images avec perte"
+	@echo "  📦 deploy           Deployer docs/ sur le serveur SFTP"
+	@echo "  ❓ help             Affiche cette aide"

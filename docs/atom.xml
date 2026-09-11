@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>ATMA's blog</title>
+  <id>https://www.atmaaa.fr/</id>
+  <link href="https://www.atmaaa.fr/"/>
+  <link rel="self" href="https://www.atmaaa.fr/atom.xml"/>
+  <updated>2026-07-28T00:00:00Z</updated>
+  <author><name>ATMA's blog</name></author>
+  <entry>
+    <title>Notes sur le Markdown</title>
+    <id>https://www.atmaaa.fr/posts/notes-sur-le-markdown/</id>
+    <link href="https://www.atmaaa.fr/posts/notes-sur-le-markdown/"/>
+    <updated>2026-07-28T00:00:00Z</updated>
+    <summary>Un rappel concis de la syntaxe supportée par le générateur, pour écrire sans friction.</summary>
+  </entry>
+  <entry>
+    <title>Bienvenue sur mon blog</title>
+    <id>https://www.atmaaa.fr/posts/premier-article/</id>
+    <link href="https://www.atmaaa.fr/posts/premier-article/"/>
+    <updated>2026-07-20T00:00:00Z</updated>
+    <summary>Voici le premier paragraphe : c'est lui qui apparaît en extrait sur la page d'accueil, juste sous le titre. Tu peux aussi forcer un résumé avec le champ summary du front matter.</summary>
+  </entry>
+</feed>
