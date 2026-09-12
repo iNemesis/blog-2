@@ -4,8 +4,15 @@
   <id>https://www.atmaaa.fr/</id>
   <link href="https://www.atmaaa.fr/"/>
   <link rel="self" href="https://www.atmaaa.fr/atom.xml"/>
-  <updated>2026-07-28T00:00:00Z</updated>
+  <updated>2026-09-12T00:00:00Z</updated>
   <author><name>ATMA's blog</name></author>
+  <entry>
+    <title>Manuel du tech lead efficace</title>
+    <id>https://www.atmaaa.fr/posts/tech-lead/</id>
+    <link href="https://www.atmaaa.fr/posts/tech-lead/"/>
+    <updated>2026-09-12T00:00:00Z</updated>
+    <summary>J’en ai marre des tech leads mous.</summary>
+  </entry>
   <entry>
     <title>Notes sur le Markdown</title>
     <id>https://www.atmaaa.fr/posts/notes-sur-le-markdown/</id>
