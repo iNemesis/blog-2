@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 	"unicode/utf8"
@@ -86,5 +88,40 @@ func TestFirstParagraphTruncatesOnRunes(t *testing.T) {
 	}
 	if !strings.HasSuffix(ex, "…") {
 		t.Errorf("extrait non tronqué : %q", ex)
+	}
+}
+
+func TestLoadPensees(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "pensees.md")
+	src := "---\ndate: 2026-09-12 14:30\n---\n\nPremière.\n\n---\n\nFin après le hr.\n\n" +
+		"---\ndate: 2026-09-11 09:15\ndraft: true\n---\n\nBrouillon.\n\n" +
+		"---\ndate: 2026-09-10 08:00\n---\n\nDeuxième [lien](https://go.dev/).\n"
+	if err := os.WriteFile(path, []byte(src), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	ps, err := loadPensees(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(ps) != 2 {
+		t.Fatalf("got %d pensées, want 2 (draft ignorée)", len(ps))
+	}
+	if !strings.Contains(string(ps[0].HTML), "Première") ||
+		!strings.Contains(string(ps[0].HTML), "<hr>") {
+		t.Errorf("pensée la plus récente mal rendue : %q", ps[0].HTML)
+	}
+	if ps[0].Date.Format("2006-01-02 15:04") != "2026-09-12 14:30" {
+		t.Errorf("date et heure mal parsées : %v", ps[0].Date)
+	}
+	if !strings.Contains(string(ps[1].HTML), `href="https://go.dev/"`) {
+		t.Errorf("markdown non rendu : %q", ps[1].HTML)
+	}
+}
+
+func TestLoadPenseesMissingFile(t *testing.T) {
+	ps, err := loadPensees(filepath.Join(t.TempDir(), "absent.md"))
+	if err != nil || ps != nil {
+		t.Fatalf("fichier absent : want nil, nil ; got %v, %v", ps, err)
 	}
 }

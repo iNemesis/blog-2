@@ -48,11 +48,17 @@ type Post struct {
 	ReadingMins int
 }
 
+type Pensee struct {
+	Date time.Time
+	HTML template.HTML
+}
+
 type PageData struct {
 	Title       string
 	Description string
 	Posts       []Post
 	Post        *Post
+	Pensees     []Pensee
 	AllTags     []string
 	CurrentTag  string
 	GeneratedAt time.Time
@@ -76,6 +82,11 @@ func run() error {
 	sort.Slice(posts, func(i, j int) bool {
 		return posts[i].ParsedDate.After(posts[j].ParsedDate)
 	})
+
+	pensees, err := loadPensees(filepath.Join(contentDir, "pensees.md"))
+	if err != nil {
+		return err
+	}
 
 	if err := cleanOutput(); err != nil {
 		return err
@@ -121,6 +132,17 @@ func run() error {
 		AllTags:     tags,
 		GeneratedAt: now,
 		Path:        "/",
+	}); err != nil {
+		return err
+	}
+
+	if err := render(tmpl, "pensees.html", filepath.Join(outputDir, "pensees", "index.html"), PageData{
+		Title:       "Pensées",
+		Description: "Micro-posts, style fil d'actu.",
+		Pensees:     pensees,
+		AllTags:     tags,
+		GeneratedAt: now,
+		Path:        "/pensees/",
 	}); err != nil {
 		return err
 	}
@@ -198,6 +220,9 @@ func loadPosts(dir string) ([]Post, error) {
 		if e.IsDir() || !strings.HasSuffix(strings.ToLower(e.Name()), ".md") {
 			continue
 		}
+		if e.Name() == "pensees.md" {
+			continue // fil de pensées, rendu à part
+		}
 		path := filepath.Join(dir, e.Name())
 		post, err := parsePost(path)
 		if err != nil {
@@ -211,6 +236,64 @@ func loadPosts(dir string) ([]Post, error) {
 		fmt.Printf("  + %s\n", post.Title)
 	}
 	return posts, nil
+}
+
+// loadPensees lit content/pensees.md : une suite de mini-articles
+// "--- / date: … / --- / markdown", écrits du plus ancien (haut) au plus
+// récent (bas). Renvoie les pensées de la plus récente à la plus ancienne.
+func loadPensees(path string) ([]Pensee, error) {
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	s := strings.ReplaceAll(string(raw), "\r\n", "\n")
+	// Chaque pensée ouvre par "---" suivi de "date:" : ce motif de découpe
+	// tolère un "---" isolé (hr markdown) dans le corps d'une pensée.
+	const sep = "\n---\ndate"
+	parts := strings.Split(s, sep)
+	var out []Pensee
+	for i, part := range parts {
+		if i > 0 {
+			part = "---\ndate" + part
+		}
+		if strings.TrimSpace(part) == "" {
+			continue
+		}
+		p, err := parsePensee(part, i+1)
+		if err != nil {
+			return nil, err
+		}
+		if p != nil {
+			out = append(out, *p)
+		}
+	}
+	sort.Slice(out, func(i, j int) bool { return out[i].Date.After(out[j].Date) })
+	return out, nil
+}
+
+func parsePensee(doc string, n int) (*Pensee, error) {
+	fm, body, err := splitFrontMatter([]byte(doc))
+	if err != nil {
+		return nil, fmt.Errorf("pensée %d: %w", n, err)
+	}
+	var meta FrontMatter
+	if err := yaml.Unmarshal(fm, &meta); err != nil {
+		return nil, fmt.Errorf("pensée %d: front matter: %w", n, err)
+	}
+	if meta.Draft {
+		return nil, nil
+	}
+	date, err := parseDate(meta.Date)
+	if err != nil {
+		return nil, fmt.Errorf("pensée %d: date %q: %w", n, meta.Date, err)
+	}
+	return &Pensee{
+		Date: date,
+		HTML: template.HTML(mdToHTML(string(body), "/pensees/")),
+	}, nil
 }
 
 func parsePost(path string) (Post, error) {
@@ -290,6 +373,8 @@ func parseDate(s string) (time.Time, error) {
 	s = strings.TrimSpace(s)
 	formats := []string{
 		"2006-01-02",
+		"2006-01-02T15:04",
+		"2006-01-02 15:04",
 		"2006-01-02T15:04:05",
 		"2006-01-02 15:04:05",
 		time.RFC3339,
@@ -299,7 +384,7 @@ func parseDate(s string) (time.Time, error) {
 			return t, nil
 		}
 	}
-	return time.Time{}, fmt.Errorf("formats acceptés: YYYY-MM-DD")
+	return time.Time{}, fmt.Errorf("formats acceptés: YYYY-MM-DD ou YYYY-MM-DD HH:MM")
 }
 
 func firstParagraph(md string) string {

@@ -31,6 +31,27 @@ draft: false
 Contenu Markdown ici.
 ```
 
+## Pensées (`content/pensees.md`)
+
+Micro-posts style fil d'actu, publiés sur `/pensees/` (plus récent en
+premier). Le fichier est une suite de mini-articles, écrits du plus ancien
+(haut) au plus récent (bas) — pour ajouter une pensée, on ajoute un bloc en
+bas du fichier :
+
+```yaml
+---
+date: 2026-09-12 14:30
+---
+
+Texte markdown libre : liens, **gras**, images, code, listes…
+```
+
+- `date` accepte `YYYY-MM-DD HH:MM` (ou la date seule).
+- `draft: true` masque une pensée.
+- Le corps est du Markdown complet, rendu comme un article.
+- Ne pas insérer de ligne vide entre `---` et `date:` (c'est le séparateur
+  de pensées).
+
 ## Configuration (`main.go`)
 
 - `siteURL` : domaine public du site, ex. `"https://monblog.fr"` (sans `/` final).

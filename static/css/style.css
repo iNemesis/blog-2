@@ -411,6 +411,10 @@ img {
   font-style: italic;
 }
 
+.prose blockquote p {
+    margin-bottom: 0.2rem;
+}
+
 .prose ul,
 .prose ol {
   padding-left: 1.35rem;
@@ -437,6 +441,7 @@ img {
 .prose img {
   max-width: 100%;
   height: auto;
+  max-height: 300px;
   display: block;
   border-radius: 30px;
 }
@@ -465,6 +470,24 @@ img {
 .post-end a:hover {
   color: var(--ink);
   text-decoration: underline;
+}
+
+/* —— Pensées —— */
+
+.pensee-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pensee {
+  margin-top: 1.65rem;
+  padding-top: 1.65rem;
+  border-top: 1px solid var(--line);
+}
+
+.pensee .prose {
+  font-size: 1rem;
 }
 
 /* —— Footer —— */
