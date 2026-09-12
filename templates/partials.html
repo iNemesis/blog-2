@@ -37,7 +37,6 @@
   </a>
   <span class="nav-sep" aria-hidden="true">|</span>
   <nav>
-    <a href="{{url `/`}}">Articles</a>
     {{if .AllTags}}{{range .AllTags}}
     <a
       class="tag-link{{if eq $.CurrentTag .}} is-active{{end}}"

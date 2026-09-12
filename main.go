@@ -248,10 +248,7 @@ func parsePost(path string) (Post, error) {
 	}
 
 	words := len(strings.Fields(bodyStr))
-	mins := words / 200
-	if mins < 1 {
-		mins = 1
-	}
+	mins := max(words/200, 1)
 
 	return Post{
 		FrontMatter: meta,
