@@ -1,0 +1,43 @@
+{{define "pensees.html"}}
+<!doctype html>
+<html lang="fr">
+  <head>
+    {{template "head" .}}
+  </head>
+  <body>
+    <div class="wrap">
+      {{template "header" .}}
+
+      <main>
+        <section class="hero">
+          <p class="eyebrow">Fil d'actu</p>
+          <h1>Pensées</h1>
+          <p class="lede">Micro-posts en vrac, un genre de twitter perso.</p>
+        </section>
+
+        {{if not .Pensees}}
+        <p class="empty">
+          Aucune pensée pour le moment. Ajoute-en dans
+          <code>content/pensees.md</code>.
+        </p>
+        {{else}}
+        <ul class="pensee-list">
+          {{range .Pensees}}
+          <li class="pensee">
+            <div class="post-meta">
+              <time datetime="{{.Date.Format `2006-01-02T15:04`}}"
+                >{{fmtDate .Date}} à {{.Date.Format `15:04`}}</time
+              >
+            </div>
+            <div class="prose">{{.HTML}}</div>
+          </li>
+          {{end}}
+        </ul>
+        {{end}}
+      </main>
+
+      {{template "footer" .}}
+    </div>
+  </body>
+</html>
+{{end}}
