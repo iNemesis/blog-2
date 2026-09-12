@@ -38,6 +38,9 @@ optimize-lossy:
 deploy:
 	go run tools/deploy.go
 
+## 🎢 Lance toutes les commandes stylées, du fmt au déploiement
+full: fmt optimize-lossy run deploy
+
 ## ❓ Affiche cette aide
 help:
 	@echo "  🚀 all              Generer le site (defaut)"
@@ -49,4 +52,5 @@ help:
 	@echo "  🖼️ optimize         Optimiser les images sans perte"
 	@echo "  🖼️ optimize-lossy   Compresser les images avec perte"
 	@echo "  📦 deploy           Deployer docs/ sur le serveur SFTP"
-	@echo "  ❓ help             Affiche cette aide"
+	@echo "  🎢 full             Lance toutes les commandes stylées, du fmt au déploiement"
+	@echo "  ❓ help              Affiche cette aide"
