@@ -126,7 +126,7 @@ func run() error {
 	now := time.Now()
 
 	if err := render(tmpl, "index.html", filepath.Join(outputDir, "index.html"), PageData{
-		Title:       "Blog",
+		Title:       "Accueil",
 		Description: siteDescription,
 		Posts:       posts,
 		AllTags:     tags,
