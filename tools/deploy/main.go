@@ -1,5 +1,3 @@
-//go:build deploy
-
 package main
 
 import (

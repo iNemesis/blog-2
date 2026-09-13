@@ -9,9 +9,23 @@ content/          → Articles Markdown (.md)
 templates/        → Templates HTML (base, index, post)
 static/           → Assets statiques copiés tels quels (CSS, images...)
 docs/             → Site généré (⚠️ ne pas modifier manuellement)
-tools/            → Outils de déploiement SFTP et optimisation d'images
+tools/            → Outils (déploiement SFTP, optimisation d'images, éditeur de pensées)
 main.go           → Moteur de rendu
 Makefile          → Raccourcis de développement
+```
+
+## Outils (`tools/`)
+
+```mermaid
+flowchart TD
+    PENSEE["make pensee — éditeur web :8081"] -- "ajoute un bloc daté" --> PEN["content/pensees.md"]
+    OPT["make optimize / optimize-lossy"] -- "compresse" --> IMG["static/"]
+    ART["content/*.md"] --> GEN["main.go — générateur"]
+    PEN --> GEN
+    IMG --> GEN
+    GEN -- "rendu statique" --> DOCS["docs/"]
+    DOCS -- "make deploy" --> DEP["tools/deploy"]
+    DEP -- "SFTP" --> SRV[("serveur web")]
 ```
 
 ## Front matter (`content/*.md`)

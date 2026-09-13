@@ -1,4 +1,4 @@
-.PHONY: all run serve fmt fmt-html fmt-go test optimize optimize-lossy deploy help
+.PHONY: all run serve pensee fmt fmt-html fmt-go test optimize optimize-lossy deploy help
 
 ## 🚀 Génère le site (par défaut)
 all: run help
@@ -10,6 +10,10 @@ run:
 ## 👀 Génère puis prévisualise sur http://localhost:8080
 serve: run
 	cd docs && python -m http.server 8080
+
+## ✏️ Ajoute une pensée via http://localhost:8081
+pensee:
+	go run ./tools/pensee
 
 ## 🧹 Formate les templates HTML
 fmt-html:
@@ -28,15 +32,15 @@ test:
 
 ## 🖼️ Optimise les images sans perte
 optimize:
-	go run tools/optimize.go
+	go run ./tools/optimize
 
 ## 🖼️ Compresse les images avec perte
 optimize-lossy:
-	go run tools/optimize.go -lossy
+	go run ./tools/optimize -lossy
 
 ## 📦 Déploie docs/ sur le serveur SFTP
 deploy:
-	go run tools/deploy.go
+	go run ./tools/deploy
 
 ## 🎢 Lance toutes les commandes stylées, du fmt au déploiement
 full: fmt optimize-lossy run deploy
@@ -45,6 +49,7 @@ full: fmt optimize-lossy run deploy
 help:
 	@echo "  🚀 all              Generer le site (defaut)"
 	@echo "  👀 serve            Previsualiser sur http://localhost:8080"
+	@echo "  ✏️ pensee           Ajouter une pensee sur localhost:8081"
 	@echo "  🧹 fmt              Formater le code Go et HTML"
 	@echo "  🧹 fmt-html         Formater les templates HTML"
 	@echo "  🧹 fmt-go           Formater les fichiers Go"
