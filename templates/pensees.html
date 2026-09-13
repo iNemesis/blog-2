@@ -10,16 +10,11 @@
 
       <main>
         <section class="hero">
-          <p class="eyebrow">Fil d'actu</p>
-          <h1>Pensées</h1>
-          <p class="lede">Micro-posts en vrac, un genre de twitter perso.</p>
+          <h1>Fil de pensées</h1>
         </section>
 
         {{if not .Pensees}}
-        <p class="empty">
-          Aucune pensée pour le moment. Ajoute-en dans
-          <code>content/pensees.md</code>.
-        </p>
+        <p class="empty">Aucune pensée pour le moment.</p>
         {{else}}
         <ul class="pensee-list">
           {{range .Pensees}}
