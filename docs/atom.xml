@@ -11,20 +11,6 @@
     <id>https://www.atmaaa.fr/posts/tech-lead/</id>
     <link href="https://www.atmaaa.fr/posts/tech-lead/"/>
     <updated>2026-09-12T00:00:00Z</updated>
-    <summary>J’en ai marre des tech leads mous.</summary>
-  </entry>
-  <entry>
-    <title>Notes sur le Markdown</title>
-    <id>https://www.atmaaa.fr/posts/notes-sur-le-markdown/</id>
-    <link href="https://www.atmaaa.fr/posts/notes-sur-le-markdown/"/>
-    <updated>2026-07-28T00:00:00Z</updated>
-    <summary>Un rappel concis de la syntaxe supportée par le générateur, pour écrire sans friction.</summary>
-  </entry>
-  <entry>
-    <title>Bienvenue sur mon blog</title>
-    <id>https://www.atmaaa.fr/posts/premier-article/</id>
-    <link href="https://www.atmaaa.fr/posts/premier-article/"/>
-    <updated>2026-07-20T00:00:00Z</updated>
-    <summary>Voici le premier paragraphe : c'est lui qui apparaît en extrait sur la page d'accueil, juste sous le titre. Tu peux aussi forcer un résumé avec le champ summary du front matter.</summary>
+    <summary>/!\ cet article est un premier jet</summary>
   </entry>
 </feed>

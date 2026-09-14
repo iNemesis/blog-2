@@ -5,6 +5,7 @@ tags:
   - meta
   - go
 image: /images/welcome.jpg
+draft: true
 ---
 
 Voici le premier paragraphe : c'est lui qui apparaît en extrait sur la page d'accueil, juste sous le titre. Tu peux aussi forcer un résumé avec le champ `summary` du front matter.

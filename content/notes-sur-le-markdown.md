@@ -6,6 +6,7 @@ tags:
   - ecriture
 image: /images/kuzco.jpg
 summary: Un rappel concis de la syntaxe supportée par le générateur, pour écrire sans friction.
+draft: true
 ---
 
 Ce résumé vient du champ `summary` du front matter, pas du premier paragraphe. Pratique quand l'intro est trop longue ou trop technique.

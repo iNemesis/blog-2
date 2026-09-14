@@ -1,7 +1,9 @@
 {{define "head"}}
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>{{if .CurrentTag}}{{.CurrentTag}} · {{end}}ATMA's blog</title>
+<title>
+  {{if .CurrentTag}}{{.CurrentTag}}{{else}}{{.Title}}{{end}} · ATMA's blog
+</title>
 {{with .Description}}<meta name="description" content="{{.}}" />{{end}}
 <meta name="color-scheme" content="light dark" />
 <link rel="icon" href="{{url `/images/atma.jpg`}}" />
@@ -10,7 +12,7 @@
 <meta property="og:type" content="{{if .Post}}article{{else}}website{{end}}" />
 <meta
   property="og:title"
-  content="{{if .CurrentTag}}{{.CurrentTag}}{{else}}ATMA's blog{{end}}"
+  content="{{if .CurrentTag}}{{.CurrentTag}}{{else}}{{.Title}}{{end}}"
 />
 {{with .Description}}<meta property="og:description" content="{{.}}" />{{end}}
 {{with abs .Path}}<meta property="og:url" content="{{.}}" />{{end}} {{if .Post}}

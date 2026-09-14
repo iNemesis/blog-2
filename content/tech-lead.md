@@ -5,6 +5,8 @@ tags:
   - tech lead
 ---
 
+**/!\ cet article est un premier jet**
+
 J’en ai marre des tech leads mous.
 
 J'ai donc identifié trois piliers qui regroupent les bonnes pratiques de tech leading qui fonctionnent pour moi, et pour les tech leads qui m'entourent.
@@ -35,26 +37,26 @@ Pour cela, vous devez créer une synergie avec votre PO pour comprendre le méti
 
 
 
-# I Mener l'équipe
+## I Mener l'équipe
 
 > "There are two types of people: those who try to win and those who try to win arguments. They are never the same." - Nassim Nicholas Taleb
 
-## Donner des enjeux
+### Donner des enjeux
 Challenger l'équipe en augmentant les objectifs, d'être ambitieux. Par exemple, on a récemment démarré un nouveau projet et le client s'attendait à ce qu'on fasse 3 fonctionnalités sur 2 mois. En équipe, j'ai poussé pour qu'on s'engage sur une fonctionnalité en plus, pour qu'on soit dans un flow soutenu. L'équipe a accepté et on a réussi à faire encore plus que ce sur quoi on s'était engagé.
 
 L'objectif est d'être dans le sweet spot du flux. Pour cela j'utilise la loi de Parkinson "tout travail augmente jusqu’à occuper entièrement le temps qui lui est affecté". Le but est de choisir le juste milieu entre burnout et boreout (l'inverse de burnout, quand l'équipe s'ennuie). C'est à dire faire plus de choses en moins de temps.
 
 // ajouter schéma
 
-## Déléguer
+### Déléguer
 En tant que TL, vous devez donner des directives, vous devez être direct. Vous ne devez pas avoir froid aux yeux de demander des choses, vous êtes là pour ça. Le meilleur moyen de donner des directives est de poser des questions : "Tu pourrais regarder ce ticket ?", "tu aurais le temps de demander à l'équipe X comment gérer l'authentification ?"...
 
 En 2025, je suis repassé développeur quelques mois. Mon tech lead était dans son premier poste, il n'osait pas donner des directives à l'équipe. Nous étions chacun des électrons libres qui nous concentrions sur le backlog. Si des problèmes survenaient en dehors du backlog (dépendance avec une autre équipe, maintient du produit, problèmes de prod), nous étions exclus. Il n'y avait pas de partage.
 
 A ce moment là, j'aurais aimé que mon TL me dise "il y a un pb en prod, vas-y" ou "gère cette dépendance avec l'équipe" ou "prend ce sujet". Sans ordre clair, l'équipe prend le sujet le plus important pour elle, qui n'est pas toujours le plus utile pour le produit.
 
-## Faire des feedbacks
-On souffre plus du manque de feedback que des feedbacks rudes. 
+### Faire des feedbacks
+> On souffre plus du manque de feedback que des feedbacks rudes. 
 
 Vous ne devez jamais faire de feedbacks négatifs en compagnie d'autres personnes. Les feedbacks se font toujours en privé.
 
@@ -68,7 +70,7 @@ Les feedbacks ne sont pas que négatifs, il faut aussi que vous fassiez des feed
 
 Vous devez aussi faire résonner ces feedbacks. Par exemple, je vais parfois voir les managers des développeurs de mon équipe pour leur dire qu'ils mériteraient d'être récompensés.
 
-### Sans rancunes
+#### Sans rancunes
 Parfois, les feedbacks se passent mal. Vous pouvez dire un mot qui *déclenche* votre interlocuteur. Ca m'est arrivé récemment, j'ai dit à un collègue qu'il silotait son équipe car à chaque fois qu'on avait besoin d'eux, on devait se justifier. On passait parfois plus de temps à nous justifier qu'à résoudre notre problème. Je trouvais que c'était dommage et quand une personne de mon équipe m'a dit la même chose, ça a validé mon intuition et je suis allé lui parler. Il a pété un câble. Il m'a dit qu'il protégeait son équipe, et j'ai eu une parole de trop quand j'ai dit "c'est bon, ils ne sont pas en sucre", ça l'a énérvé. Le débat était terminé. Il contredisait tout ce que je lui disait "vous êtes 12, dans votre équipe" "non" "combien?" "on est 11". Je parlais à un mur. J'ai donc arrêté la conversation.
 
 Parfois, on dit des mots de trop. Vous n'êtes pas un acteur avec un dialogue préparé d'avance. Vous allez peut être heurté votre interlocteur sans même vous en rendre compte. L'essentiel est d'arrêter la conversation et d'attendre que l'autre personne redescende en émotion. 
@@ -79,13 +81,13 @@ Ca ne veut pas dire que vous devez être ami avec tout le monde. Il y a des pers
 
 On parle souvent d'egoless programming, mais je pense qu'il ne faut pas limiter ce principe au développement. Vous devez faire de l'egoless working. Travailler sans égo.
 
-### Celui qui s'énerve a perdu
+#### Celui qui s'énerve a perdu
 Dans une conversation, celui qui s'énerve a perdu. Et vous allez vous énerver. Un jour, il fera trop chaud dans la salle ou vous aurez passé une mauvaise journée. Vous allez avoir une conversation et vous n'arriverez pas à vous contenir. 
 
 L'important c'est d'avancer. Si vous vous énervez, vous devenez un mur qui n'avance pas. Vous pouvez même faire reculer vos relations, et donc le projet. Donc dans ce cas, partez. Vous reviendrez le lendemain avec un meilleur mood et du recul sur le débat.
 
-## Montrer l'exemple
-Rien n'est plus contagieux que l'exemple. - François de La Rochefoucauld
+### Montrer l'exemple
+> Rien n'est plus contagieux que l'exemple. - François de La Rochefoucauld
 
 Pour que votre équipe grandisse et vous écoute, vous devez vivre parmi eux et incarner les valeurs que vous défendez. En incarnant les valeurs que vous souhaitez voir dans l'équipe, vos équipiers vont prendre exemple sur vous.
 
@@ -93,9 +95,9 @@ Pour cela, vous devez être sur le terrain, vous devez coder. On parle souvent d
 
 Vous devez donc être assez dans le code pour le comprendre, et vous devez aller assez en réunion pour comprendre le métier et le challenger.
 
-# II Servir l'équipe
+## II Servir l'équipe
 
-## Faire des O3
+### Faire des O3
 Ces O3 me permettent de détecter les signaux faibles. Par exemple, si l'un de mes développeur m'a l'air moins motivé que d'habitude, je peux lui en parler lors de ces points.
 
 Je veux savoir si mes développeurs vont bien et résoudre leurs problèmes avant que ceux-ci soient trop gros pour être résolu, et qu'ils quittent l'équipe. Une équipe qui dure est une équipe productive.
@@ -104,7 +106,7 @@ En réalité, ces points parlent surtout des aspirations de l'équipe. Par exemp
 
 Ces moments d'échange sont très appréciés par l'équipe.
 
-### En marchant
+#### En marchant
 J'ai repris l'une des habitudes de Steve Jobs pour ces O3, je les fait en marchant. Et j'y ai découvert trois avantages. Le premier est que le côte cringe d'un O3 disparait, le second est que ça devient une activité plaisante, pour prendre un bain de soleil, et la troisième est que ça libère la parole. En effet, quand le corps est occupé, l'esprit est concentré et permet des conversations plus profondes.
 
 Dans une de mes équipes, ça faisait des semaines que je faisais des O3 avec notre PO et je sentais que quelque chose n'allait pas de son côté. Mais j'étais face à un mur. Lors de nos O3, tout allait bien selon elle. Je n'arrivais pas à valider mes intuitions. Etant en train de lire la biographie de Steve Jobs par Walter Isaacson, j'ai lu cette pratique de les faire en marchant. Ca a tout changé. Elle s'est ouverte et m'a confié pourquoi ça n'allait pas. Ce qui m'a permis d'intervenir.
@@ -112,7 +114,7 @@ Dans une de mes équipes, ça faisait des semaines que je faisais des O3 avec no
 Je pratique ces points une fois par mois par équipier. Je poses des questions ouvertes comme "Quelle compétence voudrais-tu développer ?", "Comment te sens-tu dans l'équipe ?", "Qu'as-tu pensé de \[évènement] ?", "Qu'est-ce qu'on pourrait supprimer pour livrer plus vite ?". Et surtout, je marche avec eux, en ce moment au parc de Bercy.
 
 
-## Donner du leste
+### Donner du leste
 Vous devez donner du leste à vos équipes. Vous devez les laisser faire des erreurs, même si vous savez que c'est une erreur. L'un de mes profs de fac disait "\[Dans l'apprentissage] Vaut mieux guérir que prévenir". Vous pouvez expliquer des concepts pendant deux semaines, mais vous ne serez jamais autant efficace qu'en les laissant pratiquer et échouer.
 
 En 2024, alors que j'arrivais dans une nouvelle équipe et découvrais encore le produit, l'un des développeur souhaitait factoriser trois formulaires qui se ressemblaient beaucoup en un seul. Par défaut, je suis assez réticent à ce genre de factorisation. Ces formulaires avaient presque tous les champs en commun mais représentaient tous trois des concepts métiers différents. De plus, nous venions de les développer, et ils n'avaient pas encore passés leur baptême du feu : les retours clients.
@@ -127,7 +129,7 @@ Donc on a redécoupé ce composant en trois, comme au début. Ca a pris deux jou
 
 Par contre, vous ne pouvez pas laisser du leste partout. Vous devez identifier les parties du code non sensibles sur lesquels votre équipe peut apprendre par l'erreur. Restez le garde fou tout en restant ouvert.
 
-## Créer un environnement sain
+### Créer un environnement sain
 Pour récupérer les meilleures idées et remarques de chacun, dans le but de créer le meilleur produit, il faut que tout le monde puisse s'exprimer comme il le souhaite. Pour cela, il faut un environnement sain, où chacun se sent en sécurité.
 
 Je montre l'exemple en posant des questions bêtes, en acceptant quand j'ai tort et que mes équipiers ont raison. Ca n'est plus un sujet d'avoir tort. 
@@ -138,30 +140,30 @@ Je m'assure aussi que les sujets soient traités un par un. Le but est d'explore
 
 Mais le plus important pour créer un environnement sain est d'accepter les erreurs. C'est grâce aux erreurs que l'équipe apprend. Vous devez être présent pour aider à les réparer, pour faire en sorte qu'elles ne se produisent pas, et surtout pour en prendre la responsabilité.
 
-## Aller en réunion pour protéger le flow
+### Aller en réunion pour protéger le flow
 Le tech lead va à plus de réunions que ses développeurs. C'est d'ailleurs l'une des principales douleurs lorsqu'un développeur passe tech lead.
 
 Mais le tech lead va en réunion pour la bonne cause, il y va pour que ses développeur puissent coder.
 
 Parce qu'en allant dans ces réunions, il représente l'équipe, et il règle les dépendances avec les autres équipes, qui sont des obstacles au flow.
 
-### Protéger son propre agenda
+#### Protéger son propre agenda
 Par principe, je ne dis jamais NON à l'équipe ni aux experts métier. Je peux éventuellement challenger si je doute de l'utilité d'un point mais s'ils en ont besoin, j'y vais.
 
 Par contre, pour les managers du projet, par exemple les product manager ou les architectes, j'ai plus de mal à dire oui. Assez-souvent, ces points ne me servent pas, ils leur servent à eux, pour savoir ce que l'équipe fait. Ils agissent comme des passes plats pour la direction. Je leur propose donc de leur faire un compte rendu écrit.
 
 J'ajoute aussi que je me permet de ne pas aller à ces points car je remonte des alertes et je n'ai aucun souci pour dire que je ne sais pas ou que je vais avoir besoin d'eux. Certains de leurs points sont là au cas où les équipes ne remontent pas ces informations.
 
-### L'agenda des managers n'est pas celui des développeur
+#### L'agenda des managers n'est pas celui des développeur
 Selon Paul Graham, il existe deux types d'agenda : celui des managers qui se découpe finement et celui des créateurs qui se découpe en demi journée. Les développeurs sont des créateurs, si vous leur mettez un point à 15 heure, vous gâchez leur après-midi. Pareil, si vous leur mettez un point à 16h30, leur état de concentration sera moindre car il occupera une partie de leur cerveau.
 
 Vous devez faire attention aux managers qui ne se rendent pas compte qu'une heure en plein milieu de journée d'un développeur ne coûte pas juste une heure mais la demi-
 journée.
 
 Je vous conseille donc de privilégier les points en bordure de journée, de rassembler les points les jours en présentiel, de faire des points de 10 ou 20 minutes par défaut, et surtout, d'aller en point pour eux.
-# III Construire un produit efficace
+## III Construire un produit efficace
 
-## Challenger le métier
+### Challenger le métier
 
 > "Techniquement, tout est faisable"
 
@@ -173,7 +175,7 @@ Poser des questions permet de comprendre pourquoi les experts métiers, architec
 
 Par exemple, les experts métier de l'un de mes projet voulaient une recherche avec une dizaine de champs différents. J'ai donc demandé "Pourquoi avez-vous besoin de ces 10 champs ?", à quoi ils ont répondu "Pour faire des statistiques". Ils étaient habitués à ce mode de fonctionnement car leur précédente application ne fournissait pas de statistiques. J'ai donc challengé ce besoin en leur demandant de ne garder que deux champs. Très vite, ils ont négocié pour 3 champs et ne sont plus jamais revenus sur les 7 autres champs.
 
-## Objectif métier commun
+### Objectif métier commun
 La seconde qui dure dans le temps mais qui est complexe à trouver est de trouver un enjeux métier sur lequel l'équipe a un impact. Par exemple, dans l'une de mes équipe, c'était une dépendance avec un progiciel à remplacer. Sans cet objectif, l'entreprise qui m'engageait perdait plusieurs pourcents de son chiffre d'affaire. On ne pouvait pas échouer.
 
 Mais lorsque cet objectif s'est terminé, l'équipe s'est relachée, à la limite du boreout. Comme le "choc de la retraite", qui veut qu'on tombe malade quand notre rythme de travail s'arrête. Les boreout sont autant néfaste pour l'équipe que les burnout. Cette période calme, survenue juste après une période intense, a amené deux développeurs a quitter l'équipe.
@@ -181,13 +183,7 @@ Mais lorsque cet objectif s'est terminé, l'équipe s'est relachée, à la limit
 Alors pour remotiver l'équipe, on a créé un dashboard avec des données métier, le prix moyen d'un panier, quel flux d'argent avait généré l'application, le nombre d'utilisateurs... Nos développements avaient un vrai impact sur ces métriques. Par exemple, lorsqu'un bug n'affichait plus certains produits au catalogue, on voyait une perte nette sur la semaine. On avait de vrais enjeux, sur lesquels on avait du pouvoir.
 
 
-
-
-
-
-
-
-## Transformer vos intuitions en métriques
+### Transformer vos intuitions en métriques
 
 Pour piloter votre codebase et vous assurer de sa maintenabilité, n'attendez pas un audit externe à 50k, auditez la vous-même. 
 
@@ -202,12 +198,10 @@ Sur l'un de mes anciens projets, l'équipe passait sa vie à écrire des tests. 
 Grâce à cette métrique simple, nous avons pu valider notre intuition et aller la défendre au près des architectes, pour changer notre stratégie de test dont ils ne se rendaient pas compte, car ils ne savaient pas qu'on peut (très) mal tester.
 
 
-
-
-## Réduire les frontières avec les experts métier
+### Réduire les frontières avec les experts métier
 Les développeur ne veulent qu'une chose : avoir un impact sur le produit. J'ai connu des équipes qui avaient un lot de ticket à développer, et ils s'exécutaient.
 
 Techniquement, tout est possible, ça dépend du prix que vous souhaitez payer pour l'avoir. Le but du tech lead et de l'équipe est de maximiser le rapport valeur utilisateur / temps passé. Au plus il y a de fonctionnalité, au plus l'application est difficile à maintenir et à faire évoluer.
 
-## Duo TL/PO
+### Duo TL/PO
 En tant que tech lead, vous devez former un duo avec votre Product Owner. Vous devez discuter ensemble des fonctionnalité et prendre des décisions tous les deux pour créer un meilleur produit. Bien sur, vous devrez écouter les UX, les experts métier et autres. Mais l'essentiel est de créer un produit en synergie entre technique et métier.
